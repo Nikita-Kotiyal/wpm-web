@@ -1,0 +1,221 @@
+<div *ngIf="showModal"
+  class="overflow-x-hidden fixed overflow-y-auto  w-full h-full inset-0 z-99999 outline-none focus:outline-none justify-center items-center ">
+  <div class="relative sm md:w-auto px-6 mt-12">
+    <div class="relative bg-gray-200 rounded-lg shadow dark:bg-gray-700 mt-12">
+      <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+          My Meetup
+        </h3>
+        <button
+          class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+          (click)="closeModal()">
+          <span class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+            ×
+          </span>
+        </button>
+      </div>
+      <div class=" modal-popup flex-auto px-4 lg:px-10  pt-0">
+        <form [formGroup]="editForm">
+          <div class="flex flex-wrap mt-6">
+            <div class="flex-auto px-4 lg:px-10  pt-0 w-full lg:w-7/12">
+              <div class="flex flex-wrap pt-4">
+                <div class="w-full lg:w-4/12 px-4 flow-root">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="grid-password"
+                      class="float-left block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Copy a Meetup </label>
+                    <select id="countries" formControlName="copyMeetup" id="event" autocomplete="off"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <option selected>Choose </option>
+                      <option value="US">United States</option>
+                      <option value="CA">Canada</option>
+                      <option value="FR">France</option>
+                      <option value="DE">Germany</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-full lg:w-8/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Event" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Name of Event </label>
+                    <input type="text" value="Event" formControlName="eventName" id="event" autocomplete="off"
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Sport" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Sport </label>
+                    <select id="countries" formControlName="sport" (change)="onSportChanged($event)" autocomplete="off"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <option value="" selected></option>
+                      <option *ngFor="let sport of allSports" [ngValue]="sport.id">
+                        {{sport.attributes.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="league" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      league </label>
+                    <select id="countries" formControlName="league" autocomplete="off"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <option value="" selected disabled>Select A league</option>
+                      <option *ngFor="let a of allLeague" [ngValue]="a.id">
+                        {{a.attributes.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Team" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Team </label>
+                    <select id="countries" formControlName="team" autocomplete="off"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <option *ngFor="let team of allTeam" [ngValue]="team.id">
+                        {{team.attributes.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Other" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Other </label><input type="text" formControlName="OtherOne" autocomplete="off"
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Other" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Other </label><input type="text" value="United States" formControlName="OtherTwo"
+                      autocomplete="off"
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Other" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Other </label><input type="text" value="New York" formControlName="OtherThree" autocomplete="off"
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                  </div>
+                </div>
+                <div class="w-full lg:w-6/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Location" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Location Name </label><input type="text" value="Location" formControlName="location"
+                      autocomplete="off"
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                  </div>
+                </div>
+                <div class="w-full lg:w-6/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Locations"
+                      class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Suggested Locations </label>
+                    <select id="countries" formControlName="suggestedLocation" (change)="onChangeSavedLocation($event)"
+                      autocomplete="off"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <option *ngFor="let location of allLocations" [value]="location.id">
+                        {{location.attributes.address2}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-full lg:w-12/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Street" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Street
+                      Address </label><input type="text" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                      formControlName="streetAdd" autocomplete="off"
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="City" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      City </label><input type="email" value="New York" formControlName="city" autocomplete="off"
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="State" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      State </label><input type="text" value="United States" formControlName="state" autocomplete="off"
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Zip" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Zip </label><input type="text" value="147115" formControlName="zip" autocomplete="off"
+                      class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Thumbnail" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Thumbnail Image </label>
+                    <input formControlName="thumbnail" type="file" value={this.state.image}
+                      (change)="thumbnailUpload($event)" autocomplete="off" class="border-0 py-2">
+                    <div class="flex flex-wrap justify-start">
+                      <div class="w-4/12 sm:w-2/12 px-4" *ngFor="let image of imageURL; let index = index">
+                        <span class="close  text-red-600" (click)="removeSelectedFile(index)">&times;</span>
+                        <img [src]="'http://localhost:1337'+image" alt="..."
+                          class="shadow-lg rounded max-w-full h-auto align-middle border-none">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Attend" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Who can Attend?</label>
+                    <select id="countries" formControlName="attend" autocomplete="off"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <option selected disabled>Choose </option>
+                      <option *ngFor="let team of allTeam" [ngValue]="team">
+                        {{team.attributes.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="w-full lg:w-3/12 px-4">
+                  <div class="relative w-full mb-3">
+                    <label htmlfor="Banner" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                      Banner Image </label>
+                    <input type="file" (change)="bannerUpload($event)" value="Banner Image" formControlName="banner"
+                      autocomplete="off" class="border-0 py-2" />
+                    <div class="flex flex-wrap justify-start">
+                      <div class="w-4/12 sm:w-2/12 px-4" *ngFor="let image of bannerImageURL; let index = index">
+                        <span class="close  text-red-600" (click)="removeSelectedBannerFile(index)">&times;</span>
+                        <img [src]="'http://localhost:1337'+image" alt="..."
+                          class="shadow-lg rounded max-w-full h-auto align-middle border-none">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-full lg:w-4/12 px-4">
+                  &nbsp;
+                  <div class="flex items-center mt-0 mb-2"> <input type="radio" formControlName="radio" id="attendees"
+                      value="attendees">
+                    <label for="15-Miles"
+                      class="ml-2 text-sm font-medium text-blueGray-600 dark:text-gray-300">Attendees
+                      Can Connect Me</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+        <button
+          class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+          type="button" (click)="closeModal()">
+          Close
+        </button>
+        <button
+          class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+          type="button" (click)="submitted()">
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

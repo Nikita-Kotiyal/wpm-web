@@ -1,0 +1,17 @@
+<div class="flex flex-wrap">
+    <div class=" pt-6 w-full md:w-4/12 px-4 text-center" *ngFor="let card of cardsData">
+        <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 ">
+            <div class="px-4 py-5 flex-auto">
+                <div class="text-white p-3 text-center inline-flex items-center justify-center rounded-full ">
+                    <img *ngIf="card?.attributes?.image?.data[0].attributes?.url"
+                        [src]="'http://54.186.187.165:1337' + card?.attributes?.image?.data[0].attributes?.url"
+                        alt="..." class="w-14 h-14 mb-3 rounded-full shadow-lg mx-auto md:mx-0">
+                </div>
+                <h6 class="text-xl font-semibold uppercase">{{card?.attributes?.title}}</h6>
+                <p class="mt-2 mb-4 text-blueGray-500">
+                    {{card?.attributes?.description}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

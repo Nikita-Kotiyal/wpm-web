@@ -1,0 +1,583 @@
+<app-auth-navbar></app-auth-navbar>
+<main class="profile-page bg-blueGray-200 pt-6">
+  <section class="relative py-4 bg-blueGray-200 h-300-px">
+    <div class="px-4 relative flex content-center items-center justify-center">
+      <div
+        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0"
+      >
+        <div class="rounded-t bg-white mb-0 px-3 py-3">
+          <div class="text-center flex justify-between">
+            <h6 class="text-blueGray-700 text-xl ml-8 font-bold">
+              Create a Meetup
+            </h6>
+          </div>
+        </div>
+        <div>
+          <form [formGroup]="createMeetupForm">
+            <div class="flex flex-wrap">
+              <div class="flex-auto px-4 lg:px-10 pt-0 w-full lg:w-7/12">
+                <div class="flex flex-wrap pt-4">
+                  <!-- <div class="w-full lg:w-4/12 px-4 flow-root">
+                                        <div class="relative w-full mb-3"><label htmlfor="grid-password"
+                                                class=" float-left block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                                Copy a Meetup </label>
+                                            <select id="countries" formControlName="copyMeetup"
+                                                [ngClass]="{ 'is-invalid': submitted && f['copyMeetup'].errors }"
+                                                autocomplete="off"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                <option selected disabled>Copy a Meetup</option>
+                                                <option value="US">United States</option>
+                                                <option value="CA">Canada</option>
+                                                <option value="FR">France</option>
+                                                <option value="DE">Germany</option>
+                                            </select>
+
+                                            <div *ngIf="f['copyMeetup']?.touched && f['copyMeetup'].errors"
+                                                class="text-red-600">
+                                                <div *ngIf="f['copyMeetup'].errors['required']">This filed is
+                                                    required</div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                  <div class="w-full lg:w-6/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="Event"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      >
+                        Name of Event
+                      </label>
+                      <input
+                        type="text"
+                        value="Event"
+                        formControlName="name"
+                        id="event"
+                        [ngClass]="{
+                          'is-invalid': submitted && f['name'].errors
+                        }"
+                        autocomplete="off"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
+                      />
+                      <div
+                        *ngIf="f['name']?.touched && f['name'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['name'].errors['required']">
+                          This filed is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-6/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="Event"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      >
+                        Date
+                      </label>
+                      <input
+                        type="datetime-local"
+                        placeholder="start dateTime"
+                        formControlName="dateTime"
+                        [ngClass]="{
+                          'is-invalid': submitted && f['dateTime'].errors
+                        }"
+                        autocomplete="off"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
+                      />
+                      <div
+                        *ngIf="f['dateTime']?.touched && f['dateTime'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['dateTime'].errors['required']">
+                          This filed is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="w-full lg:w-4/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="Sport"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      >
+                        Sport
+                      </label>
+                      <select
+                        id="sport"
+                        formControlName="sport"
+                        (change)="onChangeSavedSports($event)"
+                        [ngClass]="{
+                          'is-invalid': submitted && f['sport'].errors
+                        }"
+                        autocomplete="off"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      >
+                        <option value="" selected disabled>
+                          Select A Sports
+                        </option>
+                        <option *ngFor="let s of AllSports" [value]="s.id">
+                          {{ s.attributes.name }}
+                        </option>
+                      </select>
+                      <div
+                        *ngIf="f['sport']?.touched && f['sport'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['sport'].errors['required']">
+                          This filed is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-4/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="league"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      >
+                        league
+                      </label>
+                      <select
+                        id="league"
+                        formControlName="league"
+                        (change)="onChangeSavedLeague($event)"
+                        [ngClass]="{
+                          'is-invalid': submitted && f['league'].errors
+                        }"
+                        autocomplete="off"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      >
+                        <option value="" selected disabled>
+                          Select A league
+                        </option>
+                        <option *ngFor="let a of allLeague" [value]="a.id">
+                          {{ a.attributes.name }}
+                        </option>
+                      </select>
+                      <div
+                        *ngIf="f['league']?.touched && f['league'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['league'].errors['required']">
+                          This filed is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-4/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="Team"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      >
+                        {{ optionName }}
+                      </label>
+                      <select
+                        id="countries"
+                        formControlName="team"
+                        [ngClass]="{
+                          'is-invalid': submitted && f['sport'].errors
+                        }"
+                        autocomplete="off"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      >
+                        <option value="" selected disabled>
+                          Select A {{ optionName }}
+                        </option>
+                        <option *ngFor="let t of allTeam" [ngValue]="t.id">
+                          {{ t.attributes.name }}
+                        </option>
+                      </select>
+                      <div
+                        *ngIf="f['team']?.touched && f['team'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['team'].errors['required']">
+                          This filed is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-6/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="Locations"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                        >Suggested Venue
+                        <span>
+                          <button
+                            (click)="getsearchLocations()"
+                            class="text-red-600 underline"
+                          >
+                            Can't see? Find Here
+                          </button>
+                        </span>
+                      </label>
+                      <select
+                        (change)="onChangeSavedLocation($event)"
+                        id="countries"
+                        formControlName="address2"
+                        autocomplete="off"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      >
+                        <option *ngFor="let l of AllLocations" [value]="l.id">
+                          {{ l.attributes.address2 }}
+                        </option>
+                      </select>
+                      <div
+                        *ngIf="f['address2']?.touched && f['address2'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['address2'].errors['required']">
+                          This filed is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-6/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="venue"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      >
+                        Venue </label
+                      ><input
+                        type="text"
+                        value="venue"
+                        formControlName="address1"
+                        [ngClass]="{
+                          'is-invalid': submitted && f['address1'].errors
+                        }"
+                        autocomplete="off"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
+                      />
+                      <div
+                        *ngIf="f['address1']?.touched && f['address1'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['address1'].errors['required']">
+                          This filed is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-12/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="Street"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                        >Street Address </label
+                      ><input
+                        type="text"
+                        value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                        formControlName="streetAdd"
+                        [ngClass]="{
+                          'is-invalid': submitted && f['streetAdd'].errors
+                        }"
+                        autocomplete="off"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
+                      />
+                      <div
+                        *ngIf="f['streetAdd']?.touched && f['streetAdd'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['streetAdd'].errors['required']">
+                          This filed is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-4/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="City"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      >
+                        City </label
+                      ><input
+                        type="email"
+                        value="New York"
+                        formControlName="city"
+                        [ngClass]="{
+                          'is-invalid': submitted && f['city'].errors
+                        }"
+                        autocomplete="off"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
+                      />
+                      <div
+                        *ngIf="f['city']?.touched && f['city'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['city'].errors['required']">
+                          This filed is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-4/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="State"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      >
+                        State </label
+                      ><input
+                        type="text"
+                        value="United States"
+                        formControlName="state"
+                        [ngClass]="{
+                          'is-invalid': submitted && f['state'].errors
+                        }"
+                        autocomplete="off"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
+                      />
+                      <div
+                        *ngIf="f['state']?.touched && f['state'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['state'].errors['required']">
+                          This filed is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-4/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="Zip"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      >
+                        Zip </label
+                      ><input
+                        type="text"
+                        value="147115"
+                        formControlName="postcode"
+                        autocomplete="off"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
+                      />
+                      <div
+                        *ngIf="f['postcode']?.touched && f['postcode'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['postcode'].errors['required']">
+                          This filed is required
+                        </div>
+                        <div *ngIf="f['postcode'].errors['pattern']">
+                          Only Number and Letter are allowed
+                        </div>
+                        <div *ngIf="f['postcode'].errors['minlength']">
+                          Value must be at least 3
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="w-full lg:w-6/12 px-4 py-4">
+                    <div class="relative w-full mb-3">
+                      <ng-select
+                        [items]="allUsers"
+                        bindLabel="username"
+                        bindValue="id"
+                        [multiple]="true"
+                        placeholder=" Who can attend"
+                        [(ngModel)]="allUsers.username"
+                        formControlName="invitees"
+                      >
+                      </ng-select>
+                      <div
+                        *ngIf="f['invitees']?.touched && f['invitees'].errors"
+                        class="text-red-600"
+                      >
+                        <div *ngIf="f['invitees'].errors['required']">
+                          This filed is required
+                        </div>
+                      </div>
+                    </div>
+                  </div> -->
+                  <div class="w-full lg:w-6/12 px-4 py-4">
+                    <div class="flex items-center mt-0 mb-2">
+                      <input
+                        type="radio"
+                        formControlName="radio"
+                        id="attendees"
+                        value="true"
+                      />
+                      <label
+                        for="15-Miles"
+                        class="ml-5 text-sm font-medium text-blueGray-600 dark:text-gray-300"
+                        >Attendees Can Connect Me</label
+                      >
+                    </div>
+
+                    <div
+                      *ngIf="f['radio']?.touched && f['radio'].errors"
+                      class="text-red-600"
+                    >
+                      <div *ngIf="f['radio'].errors['required']">
+                        This filed is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-6/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="Thumbnail"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      >
+                        Thumbnail </label
+                      ><input
+                        type="file"
+                        (change)="thumbnailUpload($event)"
+                        formControlName="thumbnail"
+                        [ngClass]="{
+                          'is-invalid': submitted && f['thumbnail'].errors
+                        }"
+                        autocomplete="off"
+                        class="border-0 py-2"
+                      />
+                      <div
+                        *ngIf="f['thumbnail']?.touched && f['thumbnail'].errors"
+                        class="text-red-600"
+                      >
+                        <!-- <div *ngIf="f['thumbnail'].errors['required']">
+                          This filed is required
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full lg:w-6/12 px-4">
+                    <div class="relative w-full mb-3">
+                      <label
+                        htmlfor="Banner"
+                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      >
+                        Banner Image
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        formControlName="banner"
+                        (change)="bannerUpload($event)"
+                        [ngClass]="{
+                          'is-invalid': submitted && f['banner'].errors
+                        }"
+                        autocomplete="off"
+                        class="border-0 py-2"
+                      />
+                      <div
+                        *ngIf="f['banner']?.touched && f['banner'].errors"
+                        class="text-red-600"
+                      >
+                        <!-- <div *ngIf="f['banner'].errors['required']">
+                          This filed is required
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-auto px-4 lg:px-10 py-4 pt-8 w-full lg:w-5/12">
+                <div class="flex flex-wrap">
+                  <div class="w-full px-4 py-4">
+                    <div
+                      class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
+                    >
+                      <app-map></app-map>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="relative py-4 bg-blueGray-200 h-300-px">
+              <div
+                class="px-4 relative flex content-center items-center justify-center"
+              >
+                <div
+                  class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0"
+                >
+                  <div class="rounded-t bg-white mb-0 px-3 py-3">
+                    <div class="text-center flex justify-between">
+                      <h6 class="text-blueGray-700 text-xl ml-8 font-bold">
+                        Details
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="flex-auto px-4 lg:px-10 py-20 pt-0">
+                    <angular-editor
+                      [config]="config"
+                      formControlName="description"
+                      [ngClass]="{
+                        'is-invalid': submitted && f['description'].errors
+                      }"
+                      autocomplete="off"
+                    ></angular-editor>
+                    <div
+                      *ngIf="
+                        f['description']?.touched && f['description'].errors
+                      "
+                      class="text-red-600"
+                    >
+                      <div *ngIf="f['description'].errors['required']">
+                        This filed is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="px-4 relative flex content-center items-center justify-center"
+              >
+                <div
+                  class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0"
+                >
+                  <div class="rounded-t bg-white mb-0 px-3 py-3">
+                    <div class="text-center flex justify-between">
+                      <h6 class="text-blueGray-700 text-xl ml-8 font-bold">
+                        What to Bring
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="flex-auto px-4 lg:px-10 py-20 pt-0">
+                    <angular-editor
+                      [config]="config"
+                      formControlName="description2"
+                      [ngClass]="{
+                        'is-invalid': submitted && f['description2'].errors
+                      }"
+                      autocomplete="off"
+                    ></angular-editor>
+                    <div
+                      *ngIf="
+                        f['description2']?.touched && f['description2'].errors
+                      "
+                      class="text-red-600"
+                    >
+                      <div *ngIf="f['description2'].errors['required']">
+                        This filed is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center flex justify-end ml-auto mb-3 px-4">
+                <button
+                  type="button"
+                  (click)="submitted()"
+                  class="bg-green-600 text-white active:bg-green-700 font-bold uppercase text-xs px-8 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="block bg-blueGray-200 mt-0">
+    <app-cards></app-cards>
+  </section>
+</main>
+<app-footer></app-footer>

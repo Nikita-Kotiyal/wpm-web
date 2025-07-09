@@ -1,0 +1,86 @@
+<footer class="relative bg-blueGray-800 pt-8 pb-6">
+  <div class="bottom-auto top-0 left-0 right-0 w-full pointer-events-none overflow-hidden -mt-20 h-20"
+    style="transform: translateZ(0)">
+  </div>
+  <div class="container mx-auto">
+    <div class="flex flex-wrap lg:text-left">
+      <div class="w-full lg:w-6/12">
+        <div class="flex flex-no-shrink items-center mr-6 text-grey-darkest">
+          <span class="lg:mx-0">
+            <img alt="..." class="w-26 h-28 " src="../../../assets/wpm-logo.png" />
+          </span>
+        </div>
+        <div class="mt-6 lg:mb-0 mb-6">
+          <button
+            class="bg-white text-lightBlue-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
+            type="button">
+            <i class="fab fa-twitter"></i>
+          </button>
+          <button
+            class="bg-white text-lightBlue-600 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
+            type="button">
+            <i class="fab fa-facebook-square"></i>
+          </button>
+          <button
+            class="bg-white text-pink-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
+            type="button">
+            <i class="fab fa-dribbble"></i>
+          </button>
+          <button
+            class="bg-white text-blueGray-800 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
+            type="button">
+            <i class="fab fa-github"></i>
+          </button>
+        </div>
+      </div>
+      <div class="w-full lg:w-6/12">
+        <div class="flex flex-wrap items-top mb-6">
+          <div class="w-full lg:w-4/12 px-4 ml-auto">
+            <span class="block  text-blueGray-200 text-sm font-semibold mb-2" *ngIf="!auth">
+              <a [routerLink]="['/login']">Sign in</a>
+            </span>
+            <ul class="list-unstyled">
+              <!-- <li *ngIf="!auth">
+                <a class="text-blueGray-200 hover:text-blueGray-300 font-semibold block pb-2 text-sm"
+                  [routerLink]="['/register']">
+                  Sign Up
+                </a>
+              </li> -->
+              <li>
+                <a class="text-blueGray-200 hover:text-blueGray-300 font-semibold block pb-2 text-sm" href="">
+                  Search Meetup
+                </a>
+              </li>
+              <li>
+                <a class="text-blueGray-200 hover:text-blueGray-300 font-semibold block pb-2 text-sm"
+                  [routerLink]="['/createmeetup']">
+                  Create Meetup
+                </a>
+              </li>
+              <li>
+                <a class="text-blueGray-200 hover:text-blueGray-300 font-semibold block pb-2 text-sm"
+                  [routerLink]="['/myaccount']">
+                  My Account
+                </a>
+              </li>
+              <li>
+                <a class="text-blueGray-200 hover:text-blueGray-300 font-semibold block pb-2 text-sm"
+                  [routerLink]="['/contact-us']">
+                  Contact Us
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="my-6 border-blueGray-300" />
+    <div class="flex flex-wrap items-center md:justify-between justify-center">
+      <div class="w-full md:w-4/12 px-4 mx-auto text-center">
+        <div class="text-sm text-blueGray-100 font-semibold py-1">
+          Copyright Watch Party Meetup © {{ date }}. All Rights reserved.
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

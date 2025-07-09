@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import 'ngx-toastr/toastr';
+
+/* @import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities"; */
+.custom canvas#captcahCanvas{
+    width: 100% !important;
+    margin-bottom: 8px;
+}
+.custom .captcha-actions{
+    width: 100% !important;
+    margin-bottom: 8px;
+}
+.captcha-container{
+    width: 100% !important;
+    margin-bottom: 8px;
+
+}
+.captcha-container input{
+    width: 50% !important;
+    margin-bottom: 8px;
+
+}
+.captcha-container button{
+    display:none !important;
+}

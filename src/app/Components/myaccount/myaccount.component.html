@@ -1,0 +1,473 @@
+<app-auth-navbar></app-auth-navbar>
+<main class="profile-page bg-blueGray-200 overflow-x-hidden abc">
+  <section class="relative block h-300-px">
+    <div
+      class="absolute top-0 w-full h-full bg-center bg-cover"
+      style="
+        background-image: url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=2710&amp;q=80');
+      "
+    >
+      <span
+        id="blackOverlay"
+        class="w-full h-full absolute opacity-50 bg-black"
+      ></span>
+    </div>
+    <div
+      class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px"
+      style="transform: translateZ(0)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+        version="1.1"
+        viewBox="0 0 2560 100"
+        x="0"
+        y="0"
+        class="absolute bottom-0 overflow-hidden"
+      >
+        <polygon
+          points="2560 0 2560 100 0 100"
+          class="text-blueGray-200 fill-current"
+        ></polygon>
+      </svg>
+    </div>
+  </section>
+  <section class="relative py-8 bg-blueGray-200">
+    <div class="container mx-auto px-4">
+      <div
+        class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64"
+      >
+        <div class="px-6 flex flex-row">
+          <div class="flex flex-wrap justify-start px-4 pt-7 pb-5">
+            <!-- <img
+              class="w-24 h-24 mb-3 rounded-full shadow-lg mx-auto md:mx-0"
+              src="../../../assets/pexels-photo-1987301.jpeg"
+              alt="Bonnie image"
+            /> -->
+            <div class="ml-10">
+              <div>
+                <h3
+                  *ngIf="userDetail?.username"
+                  class="font-semibold leading-normal text-blueGray-700"
+                >
+                  {{ userDetail?.name }}
+                  <button
+                    (click)="loginWithFacebook()"
+                    class="bg-blue-600 active:bg-blue-700 uppercase text-white font-bold hover:shadow-md shadow text-xs px-2 py-1 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                  >
+                    Link to Facebook
+                  </button>
+                  <span class="text-center ml-5 md:ml-0"
+                    ><span type="button" class="edit-icon"
+                      ><i
+                        (click)="onEdit(userDetail, 'userDetail')"
+                        class="fa fa-edit"
+                      ></i></span
+                  ></span>
+                </h3>
+              </div>
+              <div
+                *ngIf="userDetail?.email"
+                class="text-sm leading-normal mt-0 mb-2 text-blueGray-600"
+              >
+                <i class="fas fa-envelope mr-2 text-lg text-blueGray-400"></i>
+                {{ userDetail?.email }}
+              </div>
+              <div
+                *ngIf="
+                  userDetail?.location?.address1 &&
+                  userDetail?.location?.city &&
+                  userDetail?.location?.state
+                "
+                class="text-sm leading-normal mt-0 mb-2 text-blueGray-600 uppercase"
+              >
+                <i
+                  class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"
+                ></i>
+                {{ userDetail?.location?.address1 }},
+                {{ userDetail?.location?.city }},
+                {{ userDetail?.location?.state }}
+              </div>
+              <div class="mb-2 text-blueGray-600">
+                <i class="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
+                Solution Manager - Creative Tim Officer
+              </div>
+              <div class="mb-2 text-blueGray-600">
+                <i class="fas fa-university mr-2 text-lg text-blueGray-400"></i>
+                University of Computer Science
+              </div>
+            </div>
+          </div>
+          <div class="ml-20 pl-20 px-4 pt-7 pb-5">
+            <div>
+              <h3 class="font-semibold leading-normal text-blueGray-700">
+                Show search results within
+              </h3>
+            </div>
+            <div class="flex items-center mt-0 mb-2">
+              <input
+                id="5-Miles"
+                type="radio"
+                value=""
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              /><label
+                for="5-Miles"
+                class="ml-2 text-sm font-medium text-blueGray-600 text-blueGray-400"
+              >
+                5 Miles</label
+              >
+            </div>
+            <div class="flex items-center mt-0 mb-2">
+              <input
+                id="10-Miles"
+                type="radio"
+                value=""
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              /><label
+                for="10-Miles"
+                class="ml-2 text-sm font-medium text-blueGray-600 text-blueGray-400"
+              >
+                10 Miles</label
+              >
+            </div>
+            <div class="flex items-center mt-0 mb-2">
+              <input
+                id="15-Miles"
+                type="radio"
+                value=""
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              /><label
+                for="15-Miles"
+                class="ml-2 text-sm font-medium text-blueGray-600 text-blueGray-400"
+                >15 Miles</label
+              >
+            </div>
+          </div>
+
+          <div class="ml-20 pl-20 px-4 pt-7 pb-5">
+            <div>
+              <h3 class="font-semibold leading-normal text-blueGray-700">
+                Email
+                <span class="text-center ml-5 md:ml-0"
+                  ><span type="button" class="edit-icon"
+                    ><i
+                      (click)="onEdit(userDetail, 'email')"
+                      class="fa fa-edit"
+                    ></i></span
+                ></span>
+              </h3>
+            </div>
+            <div>
+              <h3 class="font-semibold leading-normal text-blueGray-700">
+                Password
+                <span class="text-center ml-5 md:ml-0"
+                  ><span type="button" class="edit-icon"
+                    ><i
+                      (click)="onEdit(userDetail, 'password')"
+                      class="fa fa-edit"
+                    ></i></span
+                ></span>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative bg-blueGray-200 px-6">
+    <div
+      class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg"
+    >
+      <div class="flex flex-wrap items-center">
+        <div
+          class="relative w-full px-4 max-w-full flex-grow flex-1 bg-blueGray-500"
+        >
+          <h3 class="text-blueGray-700 text-xl ml-3 font-bold">My Meetups</h3>
+        </div>
+        <span
+          class="mt-2 mb-2 mr-2 px-2 text-center"
+          (click)="createMeetupClick()"
+          ><span class="plus-icon"
+            ><i class="fa fa-plus"> <a class="main-nav__link"></a></i
+          ></span>
+        </span>
+      </div>
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table
+          class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+        >
+          <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+            <tr>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase whitespace-nowrap font-semibold text-left"
+              >
+                NAME OF EVENT
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase whitespace-nowrap font-semibold text-left"
+              >
+                DATE
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase whitespace-nowrap font-semibold text-left"
+              >
+                CITY
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase whitespace-nowrap font-semibold text-left"
+              >
+                STATE
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase whitespace-nowrap font-semibold text-left"
+              >
+                TEAM
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase whitespace-nowrap font-semibold text-left"
+              ></th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase whitespace-nowrap font-semibold text-left"
+              ></th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase whitespace-nowrap font-semibold text-left"
+              ></th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase whitespace-nowrap font-semibold text-left"
+              ></th>
+            </tr>
+          </thead>
+          <tbody *ngIf="myMeetups.length > 0">
+            <tr
+              class="border-b border-gray-200 dark:border-gray-700"
+              *ngFor="let meetups of myMeetups"
+            >
+              <td class="px-6 py-4">
+                {{ meetups?.attributes?.name }}
+              </td>
+              <td class="px-6 py-4">
+                <span class="">
+                  {{
+                    meetups?.attributes?.start_time
+                      | date : "dd/MM/yyyy hh:mm a"
+                  }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                {{ meetups?.attributes?.location?.data?.attributes?.city }}
+              </td>
+              <td class="px-6 py-4">
+                {{ meetups?.attributes?.location?.data?.attributes?.address1 }}
+              </td>
+              <td class="px-6 py-4">
+                {{ meetups?.attributes?.team?.data?.attributes?.name }}
+              </td>
+              <td class="px-6 py-4">
+                <button
+                  type="button"
+                  (click)="meetupViewClick(meetups)"
+                  class="active:bg-white-200 uppercase text-blue-800 font-bold hover:shadow-md text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                >
+                  View
+                </button>
+              </td>
+              <td class="px-6 py-4">
+                <button
+                  type="button"
+                  (click)="editMeetupDetail(meetups)"
+                  class="active:bg-white-200 uppercase text-blue-800 font-bold hover:shadow-md text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                >
+                  Edit
+                </button>
+              </td>
+              <td class="px-6 py-4">
+                <button
+                  type="button"
+                  class="active:bg-white-200 uppercase text-blue-800 font-bold hover:shadow-md text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                >
+                  iCal
+                </button>
+              </td>
+              <td class="px-6 py-4">
+                <button
+                  type="button"
+                  (click)="confirmationDialog('Meetup', meetups)"
+                  class="active:bg-white-200 uppercase text-blue-800 font-bold hover:shadow-md text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="myMeetups.length === 0">
+          <h3
+            style="text-align: center"
+            class="items-center text-blueGray-600 text-2xl font-bold"
+          >
+            No Meetups Available
+          </h3>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="relative bg-blueGray-200 px-6">
+    <div
+      class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg"
+    >
+      <div class="flex flex-wrap items-center">
+        <div
+          class="relative w-full px-3 py-3 max-w-full flex-grow flex-1 bg-blueGray-500"
+        >
+          <h3 class="text-blueGray-700 text-xl ml-3 font-bold">
+            Saved Search Notifications
+          </h3>
+        </div>
+      </div>
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table
+          class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+        >
+          <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+            <tr>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              >
+                SPORT
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              >
+                league
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              >
+                TEAM
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              >
+                CITY
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              >
+                STATE
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              >
+                ZIP
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              >
+                DISTANCE
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              >
+                EMAIL ALERT
+              </th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              ></th>
+              <th
+                scope="col"
+                class="px-6 bg-blueGray-50 text-blueGray-500 align-middle py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              ></th>
+            </tr>
+          </thead>
+
+          <tbody *ngIf="serachedData.length > 0">
+            <tr
+              class="border-b border-gray-200 dark:border-gray-700"
+              *ngFor="let meetups of serachedData"
+            >
+              <td class="px-6 py-4">
+                {{ meetups?.attributes?.sport }}
+              </td>
+              <td class="px-6 py-4">
+                {{ meetups?.attributes?.league }}
+              </td>
+              <td class="px-6 py-4">
+                {{ meetups?.attributes?.team }}
+              </td>
+              <td class="px-6 py-4">
+                {{ meetups?.attributes?.location?.data?.attributes?.city }}
+              </td>
+              <td class="px-6 py-4">
+                {{ meetups?.attributes?.location?.data?.attributes?.state }}
+              </td>
+              <td class="px-6 py-4">
+                {{ meetups?.attributes?.location?.data?.attributes?.postcode }}
+              </td>
+              <td class="px-6 py-4">
+                {{ meetups?.attributes?.miles }}
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <button
+                  type="button"
+                  (click)="deleteSearchMeetup('SearchedMeetup', meetups)"
+                  class="active:bg-white-200 uppercase text-blue-800 font-bold hover:shadow-md text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                >
+                  Delete
+                </button>
+              </td>
+              <td class="px-6 py-4">
+                <button
+                  type="button"
+                  (click)="getRunSearchMeetup(meetups)"
+                  class="active:bg-white-200 uppercase text-blue-800 font-bold hover:shadow-md text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                >
+                  Run Search
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="serachedData.length === 0">
+          <h3
+            style="text-align: center"
+            class="items-center text-blueGray-600 text-2xl font-bold"
+          >
+            No Saved Search Notifications Available
+          </h3>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="block bg-blueGray-200 mt-0">
+    <app-cards></app-cards>
+  </section>
+</main>
+<app-footer></app-footer>

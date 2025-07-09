@@ -1,0 +1,37 @@
+/* .profile-img{
+height:30px;
+width:40px;
+} */
+.h-300-px{
+    height: 300px;
+}
+.add-new-btn {
+    background-color: #70553c;
+}
+
+.plus-icon {
+    font-size: x-large;
+    color: black;;
+}
+
+.games-data-table  tr:nth-child(even) {
+    background: #f1f1f1
+}
+.table-head{
+    background: #f1f1f1
+}
+.abc{
+
+    overflow: hidden!important;
+}
+
+    
+.backdropBackground {
+    backdrop-filter: blur(15px);
+    }
+
+
+    .backdropBackground{
+        -webkit-filter: blur(10px);
+            filter: blur(10px);
+    }

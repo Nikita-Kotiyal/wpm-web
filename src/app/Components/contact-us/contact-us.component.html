@@ -1,0 +1,169 @@
+<app-auth-navbar></app-auth-navbar>
+<main>
+  <section class="relative block h-300-px">
+    <div
+      class="relative flex flex-col min-w-0 break-words w-full shadow-lg bg-blueGray-200 border-0"
+    >
+      <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+        <form [formGroup]="contactUsForm">
+          <h6 class="text-black text-lg mt-6 mb-6 ml-12 font-bold uppercase">
+            Contact Us
+          </h6>
+          <div class="flex flex-wrap">
+            <div class="flex-auto px-4 lg:px-10 py-10 pt-0 w-full lg:w-4/12">
+              <div class="w-full px-4">
+                <div class="relative w-full mb-3">
+                  <label
+                    htmlfor="Name"
+                    class="block mt-1 uppercase text-black text-xs font-bold mb-2"
+                  >
+                    name Address
+                  </label>
+                  <input
+                    type="text"
+                    formControlName="name"
+                    id="name"
+                    placeholder="Your Name"
+                    [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+                    autocomplete="off"
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  />
+
+                  <div
+                    *ngIf="f['name']?.touched && f['name'].errors"
+                    class="text-red-600"
+                  >
+                    <div *ngIf="f['name'].errors['required']">
+                      name is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full px-4">
+                <div class="relative w-full mb-3">
+                  <label
+                    htmlfor="Email Address"
+                    class="block mt-1 uppercase text-black text-xs font-bold mb-2"
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    type="text"
+                    formControlName="email"
+                    id="email"
+                    placeholder="Your Email"
+                    [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+                    autocomplete="off"
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  />
+
+                  <div
+                    *ngIf="f['email']?.touched && f['email'].errors"
+                    class="text-red-600"
+                  >
+                    <div *ngIf="f['email'].errors['required']">
+                      Email is required
+                    </div>
+                    <div *ngIf="f['email'].errors['pattern']">
+                      Email is invalid
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full px-4">
+                <div class="relative w-full mb-3">
+                  <label
+                    htmlfor="Subject"
+                    class="block mt-1 uppercase text-black text-xs font-bold mb-2"
+                  >
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="subject"
+                    formControlName="Subject"
+                    id="Subject"
+                    [ngClass]="{
+                      'is-invalid': submitted && f['Subject'].errors
+                    }"
+                    autocomplete="off"
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  />
+                  <div
+                    *ngIf="f['Subject']?.touched && f['Subject'].errors"
+                    class="text-red-600"
+                  >
+                    <div *ngIf="f['Subject'].errors['required']">
+                      Subject is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex-auto px-4 lg:px-10 py-12 pt-0 w-full lg:w-8/12">
+              <div class="w-full px-4">
+                <div class="relative w-full mb-3">
+                  <!-- <div class="relative w-full mb- max-w-full flex-grow flex-1"> -->
+                  <label class="font-semibold mb-1 text-base text-black"
+                    >Message</label
+                  >
+                  <!-- </div> -->
+                  <textarea
+                    type="text"
+                    rows="4"
+                    formControlName="message"
+                    id="message"
+                    placeholder="Typing"
+                    [ngClass]="{
+                      'is-invalid': submitted && f['message'].errors
+                    }"
+                    autocomplete="off"
+                    class="border-0 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  >
+                  </textarea>
+                  <div
+                    *ngIf="f['message']?.touched && f['message'].errors"
+                    class="text-red-600"
+                  >
+                    <div *ngIf="f['message'].errors['required']">
+                      Message is required
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      transform: scale(0.85);
+                      transform-origin: top left;
+                      width: fit-content;
+                    "
+                  >
+                    <ngx-captcha [config]="captchaConfig"></ngx-captcha>
+                  </div>
+
+                  <div class="rounded-t mb-0 border-0">
+                    <div class="flex flex-wrap items-center">
+                      <div
+                        class="relative w-full max-w-full flex-grow flex-1 text-right"
+                      >
+                        <button
+                          type="button"
+                          (click)="submitted()"
+                          class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        >
+                          Send
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+  <section class="block px-3 bg-blueGray-200 mb-0">
+    <app-cards></app-cards>
+  </section>
+</main>
+<app-footer></app-footer>

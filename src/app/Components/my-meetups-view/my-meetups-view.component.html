@@ -1,0 +1,191 @@
+<app-auth-navbar></app-auth-navbar>
+<main class="profile-page bg-blueGray-200 pt-6">
+  <!-- <ngx-loading
+  [show]="loading"
+  ></ngx-loading> -->
+  <section class="relative py-4 bg-blueGray-200 h-300-px">
+    <div class="px-4 relative flex content-center items-center justify-center">
+      <div
+        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0"
+      >
+        <div class="rounded-t bg-white mb-0 px-3 py-3">
+          <div class="text-center flex justify-between">
+            <h6 class="text-blueGray-700 text-xl font-bold">Meetup View</h6>
+          </div>
+        </div>
+        <div>
+          <div class="flex flex-wrap" *ngIf="viewData">
+            <div class="flex-auto px-4 lg:px-10 py-8 pt-0 w-full lg:w-7/12">
+              <div class="mt-3">
+                <div class="mb-2">
+                  <h3 class="font-semibold leading-normal text-yellow-700">
+                    {{ viewData?.attributes?.name }}
+                  </h3>
+                </div>
+                <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-600">
+                  {{ viewData?.attributes?.start_time | date : "fullDate" }}
+                </div>
+                <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-600">
+                  {{ viewData?.attributes?.league?.data?.attributes?.name }}
+                </div>
+                <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-600">
+                  {{ viewData?.attributes?.sport?.data?.attributes?.name }}
+                </div>
+                <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-600">
+                  {{ viewData?.attributes?.team?.data?.attributes?.name }}
+                </div>
+                <div class="mb-2 text-yellow-600">21+</div>
+              </div>
+              <div class="flex-auto pt-0">
+                <h6 class="text-blueGray-800 text-sm mt-3 font-bold">
+                  Details
+                </h6>
+                <p class="text-blueGray-600">
+                  {{ viewData?.attributes?.description | truncate }}
+                </p>
+              </div>
+              <div class="flex-auto pt-0">
+                <h6 class="text-blueGray-800 text-sm mt-3 font-bold">
+                  What to Bring
+                </h6>
+                <p class="text-blueGray-600">
+                  {{ viewData?.attributes?.what_to_bring | truncate }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="pt-6 w-full md:w-4/12 px-4 text-center" *ngIf="authkey">
+              <form [formGroup]="messageForm">
+                <div
+                  class="relative flex flex-col min-w-0 break-words w-full mb-8 shadow-lg rounded-lg"
+                >
+                  <div class="">
+                    <h3 class="font-semibold leading-normal text-blueGray-700">
+                      Send Meetup Owner a message
+                    </h3>
+                    <!-- <div class="flex justify-center grid grid-cols-1 mt-2 mb-2 px-4 md:grid-cols-1 ">
+                        <input type="email" placeholder="Enter email" formControlName="email"
+                          class="relative text-sm peer block md:w-full w-full rounded border-gray-400 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none " />
+                        <div *ngIf="f['email']?.touched && f['email'].errors" class="text-red-600">
+                          <div *ngIf="f['email'].errors['required']">Email is required</div>
+                          <div *ngIf="f['email'].errors['pattern']">Email is invalid</div>
+                        </div>
+                      </div> -->
+                    <div
+                      class="flex justify-center grid grid-cols-1 px-4 md:grid-cols-1"
+                     >
+                      <div
+                        class="relative mb-3 xl:w-96"
+                        data-te-input-wrapper-init
+                      >
+                        <textarea
+                          formControlName="message"
+                          class="peer block md:w-full w-full rounded border-gray-400 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                          id=""
+                          rows="3"
+                          placeholder="Your message"
+                        ></textarea>
+                        <div
+                          *ngIf="f['message']?.touched && f['message'].errors"
+                          class="text-red-600"
+                        >
+                          <div *ngIf="f['message'].errors['required']">
+                            Message is required
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="container mx-auto px-4" id="capatcha">
+                    <ngx-captcha [config]="captchaConfig"></ngx-captcha>
+                  </div>
+                  <div class="h-fit min-h-full flex justify-end px-4 mb-2">
+                    <button
+                      (click)="sendMessage()"
+                      class="mt-2 border-gray-400 hover:bg-gray-200 border-2 text-gray-600 text-sm rounded font-normal px-4 py-1 mb-1 shadow inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="pt-6 w-full md:w-4/12 px-4 text-center">
+              <div
+                class="relative flex flex-col min-w-0 break-words w-full mb-8 shadow-lg rounded-lg"
+              >
+                <div class="">
+                  <app-map></app-map>
+                </div>
+              </div>
+            </div>
+            <div class="pt-6 w-full md:w-4/12 px-4 text-center">
+              <div
+                class="relative flex flex-col min-w-0 break-words w-full mb-8 shadow-lg rounded-lg"
+              >
+                <div class="flex-auto mt-2 pt-0">
+                  <div>
+                    <h3 class="font-semibold leading-normal text-blueGray-700">
+                      {{ userData?.username }}
+                    </h3>
+                  </div>
+                  <!-- <div class="text-sm leading-normal mt-0 mr-5 mb-2 text-blueGray-600">
+                      <span class=" mt-2 mb-2 mr-2  px-2 text-center"><span class="plus-icon"><i class="fa fa-plus">
+                            <a class="main-nav__link"></a></i></span>
+                      </span>
+                      Add to my Meetups
+                    </div> -->
+                  <div class="mb-2 mr-5 text-blueGray-600" *ngIf="authkey">
+                    <span
+                      class="mt-2 mb-2 mr-2 px-2 text-center"
+                      (click)="addToMeetup()"
+                    >
+                      <i class="ml-8 fa fa-plus" aria-hidden="true"></i>
+                    </span>
+                    <span class="">Add to my Meetups</span>
+                  </div>
+
+                  <div class="mb-2 ml-6 text-blueGray-600" *ngIf="authkey">
+                    <span class="mt-2 mb-2 mr-2 px-2 text-center">
+                      <a href="https://accounts.google.com/" target="_blank">
+                        <i class="ml-1 fa fa-envelope" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                    <span class="mr-1"> {{ userData?.email }}</span>
+                  </div>
+
+                  <div class="mb-2 text-blueGray-600">
+                    <span
+                      class="mt-2 mb-2 px-2"
+                      (click)="OpenInfowindowForMarker(1)"
+                    >
+                      <i class="mr-3 fas fa-map-marker-alt"></i>
+                    </span>
+                    <span class="py-2 mr-20">Map it</span>
+                  </div>
+
+                  <div class="mb-2 text-blueGray-600">
+                    <span class="mt-2 mb-2 px-2">
+                      <a
+                        href="https://www.facebook.com/sharer/sharer.php?u=example.org"
+                        target="_blank"
+                      >
+                        <i class="mr-3 fab fa-facebook-square"></i>
+                      </a>
+                    </span>
+                    <span class="mr-20">Share</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="block bg-blueGray-200 mt-0">
+    <app-cards></app-cards>
+  </section>
+</main>
+<app-footer></app-footer>

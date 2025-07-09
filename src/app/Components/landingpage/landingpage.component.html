@@ -1,0 +1,433 @@
+<app-auth-navbar></app-auth-navbar>
+<main class="profile-page bg-blueGray-200 pt-6">
+  <section class="relative py-4 bg-blueGray-200 h-300-px">
+    <div class="px-4 relative flex content-center items-center justify-center">
+      <div
+        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0"
+      >
+        <div class="rounded-t bg-white mb-0 px-3 py-3">
+          <div class="text-center flex justify-between">
+            <h6 class="text-blueGray-700 text-xl ml-8 font-bold">
+              Search Meetups
+            </h6>
+          </div>
+        </div>
+        <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+          <form [formGroup]="searchForm">
+            <div class="flex flex-wrap mt-6">
+              <div class="w-full lg:w-3/12 px-4">
+                <div class="relative w-full mb-3">
+                  <select
+                    id="sport"
+                    formControlName="sport"
+                    (change)="onChangeSavedSports($event)"
+                    [ngClass]="{
+                      'is-invalid': getSearchData && f['sport'].errors
+                    }"
+                    autocomplete="off"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option value="" selected disabled>Select A Sports</option>
+                    <option
+                      *ngFor="let s of AllSports"
+                      [value]="s.attributes.name"
+                    >
+                      {{ s.attributes.name }}
+                    </option>
+                  </select>
+                  <div
+                    *ngIf="f['sport']?.touched && f['sport'].errors"
+                    class="text-red-600"
+                  >
+                    <div *ngIf="f['sport'].errors['required']">
+                      This filed is required
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="flex flex-wrap "> -->
+                <div class="w-full">
+                  <label
+                    htmlfor="Team"
+                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                  >
+                    Start Date
+                  </label>
+                  <div class="relative w-full mb-3">
+                    <input
+                      type="date"
+                      formControlName="firstDate"
+                      [ngClass]="{
+                        'is-invalid': getSearchData && f['firstDate'].errors
+                      }"
+                      autocomplete="off"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
+                    />
+                    <div
+                      *ngIf="f['firstDate']?.touched && f['firstDate'].errors"
+                      class="text-red-600"
+                    >
+                      <div *ngIf="f['firstDate'].errors['required']">
+                        This filed is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- </div> -->
+              </div>
+              <div class="w-full lg:w-3/12 px-4">
+                <div class="relative w-full mb-3">
+                  <select
+                    id="league"
+                    formControlName="league"
+                    (change)="onChangeSavedLeague($event)"
+                    [ngClass]="{
+                      'is-invalid': getSearchData && f['league'].errors
+                    }"
+                    autocomplete="off"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option value="" selected disabled>Select A League</option>
+                    <option
+                      *ngFor="let a of allLeague"
+                      [value]="a.attributes.name"
+                      [disabled]="!searchForm.get('sport')?.value"
+                    >
+                      {{ a.attributes.name }}
+                    </option>
+                  </select>
+                  <div
+                    *ngIf="f['league']?.touched && f['league'].errors"
+                    class="text-red-600"
+                  >
+                    <div *ngIf="f['league'].errors['required']">
+                      This filed is required
+                    </div>
+                  </div>
+                </div>
+                <div class="w-full">
+                  <label
+                    htmlfor="dateRange"
+                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                  >
+                    End Date
+                  </label>
+                  <div class="relative w-full mb-3">
+                    <input
+                      type="date"
+                      formControlName="dateRange"
+                      [ngClass]="{
+                        'is-invalid': getSearchData && f['dateRange'].errors
+                      }"
+                      autocomplete="off"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
+                    />
+                    <div
+                      *ngIf="f['dateRange']?.touched && f['dateRange'].errors"
+                      class="text-red-600"
+                    >
+                      <div *ngIf="f['dateRange'].errors['required']">
+                        This filed is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full lg:w-3/12 px-4">
+                <div class="relative w-full mb-3">
+                  <select
+                    id="countries"
+                    formControlName="team"
+                    [ngClass]="{
+                      'is-invalid': getSearchData && f['team'].errors
+                    }"
+                    autocomplete="off"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option value="" selected disabled>
+                      Select A {{ optionName }}
+                    </option>
+                    <option
+                      *ngFor="let t of allTeam"
+                      [ngValue]="t.attributes.name"
+                    >
+                      {{ t.attributes.name }}
+                    </option>
+                  </select>
+                  <div
+                    *ngIf="f['team']?.touched && f['team'].errors"
+                    class="text-red-600"
+                  >
+                    <div *ngIf="f['team'].errors['required']">
+                      This filed is required
+                    </div>
+                  </div>
+                </div>
+                <div class="relative w-full mb-3">
+                  <label
+                    htmlfor="Team"
+                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                  >
+                    Zip Code
+                    <span class="lowercase text-blueGray-400 text-xs font-bold"
+                      >(Set Default Location)</span
+                    ></label
+                  >
+                  <div class="relative w-full mb-3">
+                    <input
+                      type="text"
+                      formControlName="zipCode"
+                      [ngClass]="{
+                        'is-invalid': getSearchData && f['zipCode'].errors
+                      }"
+                      autocomplete="off"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
+                    />
+                  </div>
+                  <div
+                    *ngIf="f['zipCode']?.touched && f['zipCode'].errors"
+                    class="text-red-600"
+                  >
+                    <div *ngIf="f['zipCode'].errors['pattern']">
+                      Only Number and Letter are allowed
+                    </div>
+                    <div *ngIf="f['zipCode'].errors['minlength']">
+                      Value must be at least 3
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full lg:w-3/12 px-4">
+                <div class="ml-10">
+                  <div class="flex items-center mt-0 mb-2">
+                    <input
+                      type="radio"
+                      formControlName="radio"
+                      id="html"
+                      value="1"
+                    />
+                    <label
+                      for="Exact"
+                      class="ml-2 text-sm font-medium text-blueGray-600 dark:text-gray-300"
+                      >Exact</label
+                    ><br />
+                  </div>
+                  <div class="flex items-center mt-0 mb-2">
+                    <input
+                      type="radio"
+                      formControlName="radio"
+                      id="Miles/8km"
+                      value="8"
+                    />
+                    <label
+                      for="Miles/8km"
+                      class="ml-2 text-sm font-medium text-blueGray-600 dark:text-gray-300"
+                      >Miles/8km</label
+                    ><br />
+                  </div>
+                  <div class="flex items-center mt-0 mb-2">
+                    <input
+                      type="radio"
+                      formControlName="radio"
+                      id="10
+                      Miles"
+                      value="16"
+                    />
+                    <label
+                      for="10
+                    Miles/16km"
+                      class="ml-2 text-sm font-medium text-blueGray-600 dark:text-gray-300"
+                      >10 Miles/16km</label
+                    >
+                  </div>
+                  <div class="flex items-center mt-0 mb-2">
+                    <input
+                      type="radio"
+                      formControlName="radio"
+                      id="15-Miles"
+                      value="24"
+                    />
+                    <label
+                      for="15-Miles"
+                      class="ml-2 text-sm font-medium text-blueGray-600 dark:text-gray-300"
+                      >15 Miles/24km</label
+                    >
+                  </div>
+                  <div
+                    *ngIf="f['radio']?.touched && f['radio'].errors"
+                    class="text-red-600"
+                  >
+                    <div *ngIf="f['radio'].errors['required']">
+                      This filed is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full">
+                <!-- <div class="flex flex-wrap items-top mt-6"> -->
+                <div class="float-left px-4" *ngIf="authkey">
+                  <input
+                    id="bordered-radio-5"
+                    type="radio"
+                    [value]=""
+                    formControlName="saveSearch"
+                    (change)="onItemChange($event)"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    for="15-Miles"
+                    class="ml-2 text-sm font-medium text-blueGray-600 dark:text-gray-300"
+                  >
+                    Save Search</label
+                  >
+                </div>
+                <div class="float-right px-4">
+                  <button
+                    type="button"
+                    (click)="getSearchData()"
+                    class="text-white float-right bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Go
+                    <svg
+                      aria-hidden="true"
+                      class="w-5 h-5 ml-2 -mr-1"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <!-- </div> -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="relative py-8 bg-blueGray-200 h-300-px px-4">
+    <div
+      class="relative px-4 flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg"
+    >
+      <div class="rounded-t bg-white mb-0 px-3 py-3">
+        <div class="text-center flex justify-between">
+          <h6 class="text-blueGray-700 text-xl ml-3 font-bold">
+            Showing All Meetups
+          </h6>
+        </div>
+      </div>
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table
+          class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+        >
+          <div *ngIf="allMeetups == ''">
+            <h3
+              style="text-align: center"
+              class="items-center text-blueGray-600 text-2xl font-bold"
+            >
+              No Meetups Available
+            </h3>
+          </div>
+          <tbody *ngIf="allMeetups && allMeetups.length > 0">
+            <tr
+              class="border-b border-gray-200 dark:border-gray-700"
+              *ngFor="let meetups of allMeetups"
+            >
+              <td class="px-3 py-4">
+                <div
+                  class="flex items-center flex-wrap sm:no-wrap justify-center sm:justify-start"
+                >
+                  <div class="max-w-xs">
+                    <img
+                      [src]="
+                        meetups?.attributes?.thumbnail?.data?.attributes?.url ==
+                        null
+                          ? myImgUrl
+                          : url +
+                            meetups?.attributes?.thumbnail?.data?.attributes
+                              ?.url
+                      "
+                      class="h-auto max-w-full rounded-lg"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td class="px-3 py-4 hidden md:table-cell">
+                <div
+                  class="flex items-center flex-wrap sm:no-wrap justify-center sm:justify-start"
+                >
+                  <p class="u-slab text-2xl">{{ meetups.attributes.name }}</p>
+                </div>
+                <ul class="text-sm font-normal mb-6 hidden sm:block">
+                  <li class="mb-2 tick">
+                    {{
+                      meetups.attributes.dateTime | date : "dd/MM/yyyy hh:mm a"
+                    }}
+                  </li>
+                  <li
+                    *ngIf="
+                      meetups?.attributes?.location?.data?.attributes?.address1
+                    "
+                    class="mb-2 tick"
+                  >
+                    {{ meetups.attributes.location.data.attributes.address1 }}
+                  </li>
+                  <li
+                    *ngIf="
+                      meetups?.attributes?.location?.data?.attributes?.address2
+                    "
+                    class="mb-2 tick"
+                  >
+                    {{ meetups.attributes.location.data.attributes.address2 }}
+                  </li>
+                  <li
+                    *ngIf="
+                      meetups?.attributes?.location?.data?.attributes?.city
+                    "
+                    class="mb-2 tick"
+                  >
+                    {{ meetups.attributes.location.data.attributes.city }}
+                  </li>
+                </ul>
+              </td>
+              <td class="px-3 py-4 md:table-cell">
+                <div
+                  class="flex items-center flex-wrap sm:no-wrap justify-center sm:justify-start"
+                >
+                  <div class="font-normal text-md max-w-md ml-2">
+                    <p class="">
+                      {{ meetups.attributes.description | truncate }}
+                    </p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-3 py-4">
+                <button
+                  type="button"
+                  (click)="meetupViewClick(meetups)"
+                  class="active:bg-white-200 uppercase text-blue-800 font-bold hover:shadow-md text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                >
+                  View
+                </button>
+              </td>
+              <td class="px-3 py-4">
+                <span class="mt-2 mb-2 mr-2 px-2 text-center"
+                  ><span class="plus-icon"><i class="fa fa-plus"></i></span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section class="block bg-blueGray-200 mb-0">
+    <app-cards></app-cards>
+  </section>
+</main>
+<app-footer></app-footer>

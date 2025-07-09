@@ -1,0 +1,27 @@
+/* .relative {
+    background-color: rgba(30, 41, 59);
+
+    } */
+.text-location {
+    color: #ebc50a;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.sub-location-text {
+    font-size: smaller;
+    font-weight: 700;
+}
+
+.plus-icon {
+    font-size: x-large;
+    color: black;
+    
+}
+/* img{
+    width:30px;
+    height:30px;
+} */
+.add-new-btn{
+    background-color:#3c4f70;
+}

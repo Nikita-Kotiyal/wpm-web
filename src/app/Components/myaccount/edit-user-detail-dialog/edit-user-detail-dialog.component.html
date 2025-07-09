@@ -1,0 +1,164 @@
+<!-- class="abc overflow-x-hidden fixed overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+  <div class="relative w-full h-full max-w-md md:h-auto"> -->
+<div
+    class="overflow-x-hidden fixed overflow-y-auto  w-full h-full inset-0 z-999 outline-none focus:outline-none justify-center items-center ">
+    <div class="relative sm md:w-auto px-6 mt-12">
+        <div class="relative bg-gray-200 rounded-lg shadow dark:bg-gray-700 mt-12">
+            <!-- Modal header -->
+            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    My Detail
+                </h3>
+                <button
+                    class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    (click)="closeModal()">
+                    <span
+                        class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                        ×
+                    </span>
+                </button>
+            </div>
+            <div class="flex-auto px-4 lg:px-10  pt-0">
+                <form [formGroup]="editForm">
+                    <div class="flex flex-wrap mt-6">
+                        <div class="flex-auto px-4 lg:px-10 py-2 pt-0 w-full lg:w-7/12">
+                            <div *ngIf="data.role == 'userDetail'" class="flex flex-wrap pt-4">
+                                <div class="w-full lg:w-12/12 px-4">
+                                    <div class="relative w-full mb-3">
+                                        <label htmlfor="name"
+                                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                            Name </label><input type="text" value="" formControlName="name" required
+                                            autocomplete="off"
+                                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="data.role == 'email'" class="w-full lg:w-12/12 px-4">
+                                <div class="relative w-full mb-3"><label htmlfor="Location"
+                                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                        Email
+                                    </label><input type="text" value="" formControlName="email" autocomplete="off"
+                                        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                                    <div *ngIf="f['email']?.touched && f['email'].errors" class="text-red-600">
+                                        <div *ngIf="f['email'].errors['pattern']">Please provide a valid email address
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="data.role == 'password'" class="w-full lg:w-12/12 px-4">
+                                <div class="relative w-full mb-3"><label htmlfor="recent_password"
+                                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                        Recent Password
+                                    </label><input type="password" value="" formControlName="recent_password"
+                                        autocomplete="off"
+                                        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                                    <div *ngIf="f['recent_password']?.touched && f['recent_password'].errors"
+                                        class="text-red-600">
+                                        <div *ngIf="f['recent_password'].errors['pattern']">
+                                            Password must be eight characters, at least one uppercase letter, one
+                                            lowercase
+                                            letter, one number and special character.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="data.role == 'password'" class="w-full lg:w-12/12 px-4">
+                                <div class="relative w-full mb-3"><label htmlfor="password"
+                                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                        New Password
+                                    </label><input type="password" value="" formControlName="password"
+                                        autocomplete="off"
+                                        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                                    <div *ngIf="f['password']?.touched && f['password'].errors" class="text-red-600">
+                                        <div *ngIf="f['password'].errors['pattern']">
+                                            Password must be eight characters, at least one uppercase letter, one
+                                            lowercase
+                                            letter, one number and special character.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="data.role == 'password'" class="w-full lg:w-12/12 px-4">
+                                <div class="relative w-full mb-3"><label htmlfor="re_password"
+                                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                        Confirm Password
+                                    </label><input type="password" value="" formControlName="re_password"
+                                        autocomplete="off"
+                                        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                                    <div *ngIf="f['re_password']?.touched && f['re_password'].errors"
+                                        class="text-red-600">
+                                        <div *ngIf="f['re_password'].errors['matching']">
+                                            Repeat Password does not match
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="data.role == 'userDetail'" class="w-full lg:w-12/12 px-4">
+                                <div class="relative w-full mb-3"><label htmlfor="Location"
+                                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                        Location
+                                    </label><input type="text" value="locations" formControlName="address1"
+                                        autocomplete="off"
+                                        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                                </div>
+                            </div>
+
+                            <div *ngIf="data.role == 'userDetail'" class="w-full lg:w-12/12 px-4">
+                                <div class="relative w-full mb-3">
+                                    <label htmlfor="Street"
+                                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Street
+                                    </label><input type="text" value="" formControlName="streetAdd" required
+                                        autocomplete="off"
+                                        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                                </div>
+                            </div>
+                            <div *ngIf="data.role == 'userDetail'" class="w-full lg:w-12/12 px-4">
+                                <div class="relative w-full mb-3">
+                                    <label htmlfor="City"
+                                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                        City </label><input type="text" value="" formControlName="city" required
+                                        autocomplete="off"
+                                        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                                </div>
+                            </div>
+                            <div *ngIf="data.role == 'userDetail'" class="w-full lg:w-12/12 px-4">
+                                <div class="relative w-full mb-3">
+                                    <label htmlfor="State"
+                                        class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                        State </label><input type="text" formControlName="state" required
+                                        autocomplete="off"
+                                        class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                                </div>
+                            </div>
+                            <div *ngIf="data.role == 'userDetail'" class="flex flex-wrap ">
+                                <div class="w-full lg:w-12/12 px-4">
+                                    <div class="relative w-full mb-3">
+                                        <label htmlfor="education"
+                                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                            Education </label><input type="text" value="" formControlName="education"
+                                            required autocomplete="off"
+                                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                <button
+                    class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button" (click)="closeModal()">
+                    Close
+                </button>
+                <button
+                    class="bg-emerald-500 mr-5 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button" (click)="updateUserDetail()">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
