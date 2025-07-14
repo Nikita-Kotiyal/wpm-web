@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import axios from 'axios';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+
+interface AuthResponse {
+  jwt: string;
+  user: any;
+}
 
 @Component({
   selector: 'app-o-auth-callback',
@@ -8,47 +13,44 @@ import axios from 'axios';
   styleUrls: ['./o-auth-callback.component.css']
 })
 export class OAuthCallbackComponent {
+  public provider: string | null = null;
+  public token: string | null = null;
 
-  public provider : any = null;
-  public token : any = null;
-  
-  constructor(private route: ActivatedRoute) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
-
-  
-  ngOnInit() {
-    // Get the auth provider 
+  ngOnInit(): void {
+    // Get provider from route param (like 'google' or 'facebook')
     this.route.paramMap.subscribe((params: ParamMap) => {
-      this.provider = params.get('provider')
+      this.provider = params.get('provider');
     });
-    
-    // Get the token after successfully logged in.
-    this.route.queryParams
-      .subscribe(params => {
-        this.token = params?.['id_token'];
+
+    // Get access token from query param
+    this.route.queryParams.subscribe(params => {
+      this.token = params['access_token'] || params['id_token'] || null;
+
+      if (this.token && this.provider) {
+        this.fetchJwtAndRedirect();
       }
-    );
-
-    if(this.token && this.provider){
-      // fetch the jwt token from strapi for the logged in user.
-      this.fetchTheJwt();
-    }
+    });
   }
 
-  fetchTheJwt(){
-    axios
-      .get(`http://localhost:1337/api/auth/${this.provider}/callback?access_token=${this.token}`, {
-    
-      })
-      .then(response => {
-        
-        console.log('User profile', response.data.user);
-        console.log('User token', response.data.jwt);
-      })
-      .catch(error => {
-        // Handle error.
-        console.log('An error occurred:', error.response);
-      });
-  }
+  fetchJwtAndRedirect(): void {
+    const callbackURL = `http://localhost:1337/api/auth/${this.provider}/callback?access_token=${this.token}`;
 
+    this.http.get<AuthResponse>(callbackURL).subscribe({
+      next: (res: AuthResponse) => {
+        localStorage.setItem('jwt', res.jwt);
+        localStorage.setItem('user', JSON.stringify(res.user));
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        console.error('OAuth callback error:', err);
+        // You can redirect to an error page or show a toast here
+      }
+    });
+  }
 }

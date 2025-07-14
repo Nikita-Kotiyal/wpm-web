@@ -101,30 +101,31 @@ export class MyMeetupsViewComponent {
         this.userDetail = res;
       });
   }
-
   getMeetUpData() {
     this.apiService.getAllMeetups().subscribe((res: any) => {
       this.myMeetups = res.data;
-      res.data.map((ele: any) => {
-        if (this.viewDataId === ele.id) {
-          this.viewData = ele;
-        } else {
-          if (this.authkey) {
-            this.getSearchAllMeetup();
-          }
-        }
-      });
+
+      const matchedMeetup = res.data.find(
+        (ele: any) => ele.id === this.viewDataId
+      );
+
+      if (matchedMeetup) {
+        this.viewData = matchedMeetup;
+      } else if (this.authkey) {
+        this.getSearchAllMeetup(); // fallback if not found
+      }
     });
   }
+
   getSearchAllMeetup() {
     this.apiService.getSearchMeetup(this.authkey).subscribe((res: any) => {
-      res.data.map((ele: any) => {
-        if (this.viewDataId === ele.id) {
-          this.viewData = ele;
-        }
-      });
+      const matched = res.data.find((ele: any) => ele.id === this.viewDataId);
+      if (matched) {
+        this.viewData = matched;
+      }
     });
   }
+
   addToMeetup() {
     let meetupData = {
       name: this.viewData.attributes.name,

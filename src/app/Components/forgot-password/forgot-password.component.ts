@@ -43,17 +43,33 @@ export class ForgotPasswordComponent {
   submit(): void {
     this.forgotPassForm.markAllAsTouched();
     this.submitted = true;
+
     if (this.forgotPassForm.invalid) {
       return;
     }
-    let data = {
+
+    const data = {
       email: this.forgotPassForm.get('email')?.value,
     };
+
     this.apiService.forgotPassword(data).subscribe((res) => {
       if (res.error) {
         this.toaster.error(res.error.error.message);
       } else {
-        this.toaster.success('Please! check your e-mail', 'Success');
+        const toastRef = this.toaster.success(
+          'Please check your e-mail!',
+          'Success',
+          {
+            closeButton: true,
+            tapToDismiss: false,
+            timeOut: 0,
+          }
+        );
+
+
+        toastRef.onHidden.subscribe(() => {
+          this._route.navigate(['/login']);
+        });
       }
     });
   }

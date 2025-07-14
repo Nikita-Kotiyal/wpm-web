@@ -105,11 +105,22 @@ export class ContactUsComponent {
           this.toaster.error(res.error.error.message);
         } else {
           const userName = this.contactUsForm.get('name')?.value;
-          this.toaster.success(
-            `Thank you for reaching out, ${userName}! Your message has been sent successfully.`
+
+          const toastRef = this.toaster.success(
+            `Thank you for reaching out, ${userName}! Your message has been sent successfully.`,
+            'Success',
+            {
+              closeButton: true,
+              tapToDismiss: false,
+              timeOut: 0, // Toast won't auto-close
+            }
           );
+
+          // 🚀 Redirect on close
+          toastRef.onHidden.subscribe(() => {
+            this._router.navigate(['/']); // or wherever your landing page is
+          });
         }
-        this._router.navigate(['']);
       }
     });
   }

@@ -26,6 +26,15 @@
                   {{ viewData?.attributes?.start_time | date : "fullDate" }}
                 </div>
                 <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-600">
+                  {{ viewData?.attributes?.location.data.attributes.address1 }}
+                </div>
+                <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-600">
+                  {{ viewData?.attributes?.location.data.attributes.address2 }}
+                </div>
+                <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-600">
+                  {{ viewData?.attributes?.location.data.attributes.city }}
+                </div>
+                <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-600">
                   {{ viewData?.attributes?.league?.data?.attributes?.name }}
                 </div>
                 <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-600">
@@ -74,7 +83,7 @@
                       </div> -->
                     <div
                       class="flex justify-center grid grid-cols-1 px-4 md:grid-cols-1"
-                     >
+                    >
                       <div
                         class="relative mb-3 xl:w-96"
                         data-te-input-wrapper-init

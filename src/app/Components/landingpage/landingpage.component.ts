@@ -1,22 +1,28 @@
-
 import { HttpClient } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { switchMap } from 'rxjs';
 import { ApiServiceService } from 'src/app/Services/api-service.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table'
+import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-landingpage',
   templateUrl: './landingpage.component.html',
-  styleUrls: ['./landingpage.component.css']
+  styleUrls: ['./landingpage.component.css'],
 })
 export class LandingpageComponent {
-  url: any = "http://54.186.187.165:1337"
+  url: any = 'http://54.186.187.165:1337';
+  searchSubmitted: boolean = false;
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   ZipRegex = /^[a-zA-Z0-9\s]{0,10}$/;
   radio: '' | undefined;
@@ -43,8 +49,8 @@ export class LandingpageComponent {
     firstDate: new FormControl(''),
     exact: new FormControl(''),
     radio: new FormControl(''),
-    saveSearch: new FormControl(''),
-  })
+    saveSearch: new FormControl(false),
+  });
   dataSource: any;
   allData: any;
   length = 50;
@@ -63,45 +69,45 @@ export class LandingpageComponent {
   curretUser: any;
   allEvents: any;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     private apiService: ApiServiceService,
     public activatedRoute: ActivatedRoute,
     private httpClient: HttpClient,
     private ngxService: NgxUiLoaderService,
-    private toastr: ToastrService,) {
-  }
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.optionName = 'Team';
-    this.authkey = localStorage.getItem("jwt");
-    let user: any = localStorage.getItem("user");
+    this.authkey = localStorage.getItem('jwt');
+    let user: any = localStorage.getItem('user');
     this.curretUser = JSON.parse(user);
-    this.activatedRoute.queryParams
-      .subscribe(params => {
-        if (params['id']) {
-          this.searchDataId = JSON.parse(params['id']);
-        }
-      });
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params['id']) {
+        this.searchDataId = JSON.parse(params['id']);
+      }
+    });
     if (this.searchDataId) {
       if (this.authkey) {
-        this.apiService.getSearchMeetup(this.authkey)
-          .subscribe((res: any) => {
-            this.allMeetups = res.data;
-          });
+        this.apiService.getSearchMeetup(this.authkey).subscribe((res: any) => {
+          this.allMeetups = res.data;
+        });
       }
     }
 
     this.myImgUrl = '../../../assets/logo-party (1).png';
     this.apiService.getSports().subscribe((res: any) => {
       if (res.data) {
-        this.AllSports = res.data.sort((a: any, b: any) => a.attributes.name.localeCompare(b.attributes.name))
+        this.AllSports = res.data.sort((a: any, b: any) =>
+          a.attributes.name.localeCompare(b.attributes.name)
+        );
       }
     });
 
     this.apiService.getLeagues().subscribe((res: any) => {
       this.allLeagues = res.data;
-
     });
 
     this.apiService.getTeam().subscribe((res: any) => {
@@ -110,62 +116,87 @@ export class LandingpageComponent {
 
     this.apiService.getEvents().subscribe((res: any) => {
       this.allEvents = res.data;
-    })
-    this.searchForm = this.formBuilder.group(
-      {
-        sport: [''],
-        league: [''],
-        team: [''],
-        dateRange: [''],
-        zipCode: ['', [Validators.pattern(this.ZipRegex), Validators.minLength(3)]],
-        keywords: ['',],
-        firstDate: [''],
-        exact: [''],
-        radio: [''],
-        saveSearch: ['']
-      }
-    )
+    });
+    this.searchForm = this.formBuilder.group({
+      sport: [''],
+      league: [''],
+      team: [''],
+      dateRange: [''],
+      zipCode: [
+        '',
+        [Validators.pattern(this.ZipRegex), Validators.minLength(3)],
+      ],
+      keywords: [''],
+      firstDate: [''],
+      exact: [''],
+      radio: [''],
+      saveSearch: [''],
+    });
 
     this.apiService.getAllMeetups().subscribe((res: any) => {
-      this.allData = res.data;
-      this.allMeetups = res.data;
-      this.dataSource = new MatTableDataSource<any>(res.data);
+      const now = new Date().getTime();
+
+      const upcomingMeetups = res.data.filter((meetups: any) => {
+        const rawDate = meetups.attributes?.start_time;
+        if (!rawDate) {
+          console.warn(
+            '⛔ Skipping - dateTime missing:',
+            meetups.attributes?.name
+          );
+          return false;
+        }
+
+        const meetupTime = new Date(rawDate).getTime();
+        return meetupTime >= now;
+      });
+
+      console.log('✅ Filtered Upcoming Meetups:', upcomingMeetups);
+
+      this.allData = upcomingMeetups;
+      this.allMeetups = upcomingMeetups;
+      this.dataSource = new MatTableDataSource<any>(upcomingMeetups);
     });
 
     this.loadIp();
-
   }
   ngAfterViewInit() {
     // this.dataSource.paginator = this.paginator;
   }
   loadIp() {
-    this.httpClient.get('https://api.bigdatacloud.net/data/client-ip')
+    this.httpClient
+      .get('https://api.bigdatacloud.net/data/client-ip')
       .pipe(
         switchMap((value: any) => {
           this.userIP = value.ipString;
-          localStorage.setItem('ip', value.ipString)
-          let url = `http://ip-api.com/json/` + value.ipString
+          localStorage.setItem('ip', value.ipString);
+          let url = `http://ip-api.com/json/` + value.ipString;
           return this.httpClient.get(url);
         })
-      ).subscribe(
+      )
+      .subscribe(
         (value: any) => {
-          localStorage.setItem('latitude', value.lat)
-          localStorage.setItem('longitude', value.lon)
+          localStorage.setItem('latitude', value.lat);
+          localStorage.setItem('longitude', value.lon);
         },
-        err => {
-        }
+        (err) => {}
       );
   }
+
   getSearchAllMeetup() {
-    this.apiService.getSearchMeetup(this.authkey)
-      .subscribe((res: any) => {
-        res.data.map((ele: any) => {
-          if (this.searchDataId === ele.id) {
-            this.serchedDta = ele
-            this.patchSearchValue();
-          }
-        });
-      })
+    this.apiService.getSearchMeetup(this.authkey).subscribe((res: any) => {
+      console.log('🔍 Final Search Query:', this.meetupSearchData);
+
+      const matchedMeetup = res.data.find(
+        (ele: any) => ele.id === this.searchDataId
+      );
+
+      if (matchedMeetup) {
+        this.serchedDta = matchedMeetup;
+        this.patchSearchValue(); // 👈 Load form or UI details
+      } else {
+        console.warn('No matching meetup found with ID:', this.searchDataId);
+      }
+    });
   }
 
   get f(): { [key: string]: AbstractControl } {
@@ -181,77 +212,108 @@ export class LandingpageComponent {
     let html: any = [];
 
     for (var i = 0; i < dst.length; i++) {
-      if (this.distance(poslat, poslng, dst[i].attributes.location.data.attributes.lat_coord, dst[i].attributes.location.data.attributes.long_coord, "M") <= miles) {
+      if (
+        this.distance(
+          poslat,
+          poslng,
+          dst[i].attributes.location.data.attributes.lat_coord,
+          dst[i].attributes.location.data.attributes.long_coord,
+          'M'
+        ) <= miles
+      ) {
         html[i] = dst[i];
       }
     }
     this.allMeetups.push(html);
-
   }
-
   getSearchData(): void {
-    this.searchForm.markAllAsTouched();
-    if (
-      this.searchForm.get('firstDate')?.value == '' &&
-      this.searchForm.get('sport')?.value == '' &&
-      this.searchForm.get('team')?.value == '' &&
-      this.searchForm.get('league')?.value == '' &&
-      this.searchForm.get('zipCode')?.value == '' &&
-      this.searchForm.get('sport')?.value == '' &&
-      this.searchForm.get('dateRange')?.value == ''
-    ) {
-      this.toastr.error('Please! fill atleast one field.');
-      return;
-    }
-    let firstDate = "filters[createdAt][$gte]=" + this.searchForm.get('firstDate')?.value + "&"
-    let endDate = "filters[createdAt][$lte]=" + this.searchForm.get('dateRange')?.value + "&"
-    let sport = "filters[sport][name][$eq]=" + this.searchForm.get('sport')?.value + "&"
-    let team = "filters[team][name][$eq]=" + this.searchForm.get('team')?.value + "&"
-    let league = "filters[league][name][$eq]=" + this.searchForm.get('league')?.value + "&"
-    let postcode = "filters[location][postcode][$eq]=" + this.searchForm.get('zipCode')?.value + "&"
-    // let miles = "&filters[location][postcode][$eq]=" + this.searchForm.get('radio')?.value
 
-    this.meetupSearchData =
-      "meetups?"
+    this.searchForm.markAllAsTouched();
+    this.searchSubmitted = true;
+
+    // Removed the check that required at least one field to be filled
+
+    let queryParts: string[] = [];
 
     if (this.searchForm.get('firstDate')?.value) {
-      this.meetupSearchData = this.meetupSearchData + firstDate
+      queryParts.push(
+        `filters[createdAt][$gte]=${this.searchForm.get('firstDate')?.value}`
+      );
     }
     if (this.searchForm.get('dateRange')?.value) {
-      this.meetupSearchData = this.meetupSearchData + endDate
-    } if (this.searchForm.get('sport')?.value) {
-      this.meetupSearchData = this.meetupSearchData + sport
-    } if (this.searchForm.get('team')?.value) {
-      this.meetupSearchData = this.meetupSearchData + team
-    } if (this.searchForm.get('league')?.value) {
-      this.meetupSearchData = this.meetupSearchData + league
-    } if (this.searchForm.get('zipCode')?.value) {
-      this.meetupSearchData = this.meetupSearchData + postcode
+      queryParts.push(
+        `filters[createdAt][$lte]=${this.searchForm.get('dateRange')?.value}`
+      );
+    }
+    if (this.searchForm.get('sport')?.value) {
+      queryParts.push(
+        `filters[sport][name][$eq]=${this.searchForm.get('sport')?.value}`
+      );
+    }
+    if (this.searchForm.get('team')?.value) {
+      queryParts.push(
+        `filters[team][name][$eq]=${this.searchForm.get('team')?.value}`
+      );
+    }
+    if (this.searchForm.get('league')?.value) {
+      queryParts.push(
+        `filters[league][name][$eq]=${this.searchForm.get('league')?.value}`
+      );
+    }
+    if (this.searchForm.get('zipCode')?.value) {
+      queryParts.push(
+        `filters[location][postcode][$eq]=${
+          this.searchForm.get('zipCode')?.value
+        }`
+      );
     }
 
-    this.apiService.getSearchedMeetup(this.meetupSearchData).subscribe((res: any) => {
-      if (this.searchForm.get('radio')?.value) {
-        this.getMeetupUserLocation(res.data);
-      }
-      this.allMeetups = res.data;
-      this.data = res.data;
-      if (this.searchedData == 'on') {
-        let searchMeetupData = {
-          league: this.searchForm.get('league')?.value,
-          sport: this.searchForm.get('sport')?.value,
-          team: this.searchForm.get('team')?.value,
-          startTime: this.searchForm.get('firstDate')?.value,
-          endTime: this.searchForm.get('dateRange')?.value,
-          miles: this.searchForm.get('radio')?.value,
-          latitude: localStorage.getItem('latitude'),
-          longitude: localStorage.getItem('longitude'),
-          ip: localStorage.getItem('ip'),
-          users_permissions_user: this.curretUser.id
+    this.meetupSearchData = 'meetups?' + queryParts.join('&');
+
+    console.log('🔍 Final Search Query:', this.meetupSearchData); // ✅ Add log
+
+    this.apiService
+      .getSearchedMeetup(this.meetupSearchData)
+      .subscribe((res: any) => {
+        const now = new Date().getTime();
+
+        const upcomingMeetups = res.data.filter((meetup: any) => {
+          const rawDate = meetup.attributes?.start_time;
+          if (!rawDate) return false;
+          const meetupTime = new Date(rawDate).getTime();
+          return meetupTime >= now;
+        });
+
+        this.allMeetups = upcomingMeetups;
+        this.data = upcomingMeetups;
+
+        // ✅ FIX: Use form control instead of searchedData
+        if (this.searchForm.get('saveSearch')?.value === true) {
+          const searchMeetupData = {
+            league: this.searchForm.get('league')?.value,
+            sport: this.searchForm.get('sport')?.value,
+            team: this.searchForm.get('team')?.value,
+            startTime: this.searchForm.get('firstDate')?.value,
+            endTime: this.searchForm.get('dateRange')?.value,
+            miles: this.searchForm.get('radio')?.value,
+            latitude: localStorage.getItem('latitude'),
+            longitude: localStorage.getItem('longitude'),
+            ip: localStorage.getItem('ip'),
+            users_permissions_user: this.curretUser.id,
+          };
+
+          this.apiService
+            .saveSearchedMeetup(searchMeetupData, this.authkey)
+            .subscribe(
+              (res: any) => {
+                this.toastr.success('Search saved to account successfully!');
+              },
+              (error) => {
+                this.toastr.error('Failed to save search.');
+              }
+            );
         }
-        this.apiService.saveSearchedMeetup(searchMeetupData, this.authkey).subscribe((res: any) => {
-        })
-      }
-    })
+      });
   }
 
   onItemChange(event: any) {
@@ -271,35 +333,53 @@ export class LandingpageComponent {
       league: this.serchedDta.attributes['league'],
       sport: this.serchedDta.attributes['sport'],
       team: this.serchedDta.attributes['team'],
-      firstDate: this.formatDate(new Date(this.serchedDta.attributes['startTime'])),
-      dateRange: this.formatDate(new Date(this.serchedDta.attributes['endTime'])),
+      firstDate: this.formatDate(
+        new Date(this.serchedDta.attributes['startTime'])
+      ),
+      dateRange: this.formatDate(
+        new Date(this.serchedDta.attributes['endTime'])
+      ),
       description: this.serchedDta.attributes['description'],
       location: this.serchedDta.attributes['location'],
       radio: this.serchedDta.attributes['miles'],
-    }
+    };
     this.searchForm.patchValue(contact);
     this.getSearchData();
   }
-  distance(lat1: number, lon1: number, lat2: number, lon2: number, unit: string) {
-    var radlat1 = Math.PI * lat1 / 180
-    var radlat2 = Math.PI * lat2 / 180
-    var theta = lon1 - lon2
-    var radtheta = Math.PI * theta / 180
-    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+  distance(
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number,
+    unit: string
+  ) {
+    var radlat1 = (Math.PI * lat1) / 180;
+    var radlat2 = (Math.PI * lat2) / 180;
+    var theta = lon1 - lon2;
+    var radtheta = (Math.PI * theta) / 180;
+    var dist =
+      Math.sin(radlat1) * Math.sin(radlat2) +
+      Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
     if (dist > 1) {
       dist = 1;
     }
-    dist = Math.acos(dist)
-    dist = dist * 180 / Math.PI
-    dist = dist * 60 * 1.1515
-    if (unit == "K") { dist = dist * 1.609344 }
-    if (unit == "N") { dist = dist * 0.8684 }
-    return dist
+    dist = Math.acos(dist);
+    dist = (dist * 180) / Math.PI;
+    dist = dist * 60 * 1.1515;
+    if (unit == 'K') {
+      dist = dist * 1.609344;
+    }
+    if (unit == 'N') {
+      dist = dist * 0.8684;
+    }
+    return dist;
   }
 
   meetupViewClick(meetup: any) {
-    this.router.navigate(['meetup-view'], { queryParams: { id: JSON.stringify(meetup.id) } });
-  };
+    this.router.navigate(['meetup-view'], {
+      queryParams: { id: JSON.stringify(meetup.id) },
+    });
+  }
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.length = e.length;
@@ -312,7 +392,9 @@ export class LandingpageComponent {
       this.searchForm.controls['league'].setValue('');
       this.searchForm.controls['team'].setValue('');
       if (sport.attributes.name == event.target.value) {
-        this.allLeague = sport.attributes.leagues.data.sort((a: any, b: any) => a.attributes.name.localeCompare(b.attributes.name));
+        this.allLeague = sport.attributes.leagues.data.sort((a: any, b: any) =>
+          a.attributes.name.localeCompare(b.attributes.name)
+        );
         sport;
       }
     });
@@ -323,10 +405,14 @@ export class LandingpageComponent {
       if (league.attributes.name == event.target.value) {
         if (league.attributes.teams.data.length == 0) {
           this.optionName = 'Event';
-          this.allTeam = league.attributes.events.data.sort((a: any, b: any) => a.attributes.name.localeCompare(b.attributes.name));
+          this.allTeam = league.attributes.events.data.sort((a: any, b: any) =>
+            a.attributes.name.localeCompare(b.attributes.name)
+          );
         } else {
           this.optionName = 'Team';
-          this.allTeam = league.attributes.teams.data.sort((a: any, b: any) => a.attributes.name.localeCompare(b.attributes.name));
+          this.allTeam = league.attributes.teams.data.sort((a: any, b: any) =>
+            a.attributes.name.localeCompare(b.attributes.name)
+          );
         }
       }
     });

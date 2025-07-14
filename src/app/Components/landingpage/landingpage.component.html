@@ -22,7 +22,7 @@
                     formControlName="sport"
                     (change)="onChangeSavedSports($event)"
                     [ngClass]="{
-                      'is-invalid': getSearchData && f['sport'].errors
+                      'is-invalid': searchSubmitted && f['sport'].errors
                     }"
                     autocomplete="off"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -57,7 +57,7 @@
                       type="date"
                       formControlName="firstDate"
                       [ngClass]="{
-                        'is-invalid': getSearchData && f['firstDate'].errors
+                        'is-invalid': searchSubmitted && f['firstDate'].errors
                       }"
                       autocomplete="off"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
@@ -81,7 +81,7 @@
                     formControlName="league"
                     (change)="onChangeSavedLeague($event)"
                     [ngClass]="{
-                      'is-invalid': getSearchData && f['league'].errors
+                      'is-invalid': searchSubmitted && f['league'].errors
                     }"
                     autocomplete="off"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -116,7 +116,7 @@
                       type="date"
                       formControlName="dateRange"
                       [ngClass]="{
-                        'is-invalid': getSearchData && f['dateRange'].errors
+                        'is-invalid': searchSubmitted && f['dateRange'].errors
                       }"
                       autocomplete="off"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
@@ -138,7 +138,7 @@
                     id="countries"
                     formControlName="team"
                     [ngClass]="{
-                      'is-invalid': getSearchData && f['team'].errors
+                      'is-invalid': searchSubmitted && f['team'].errors
                     }"
                     autocomplete="off"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -177,7 +177,7 @@
                       type="text"
                       formControlName="zipCode"
                       [ngClass]="{
-                        'is-invalid': getSearchData && f['zipCode'].errors
+                        'is-invalid': searchSubmitted && f['zipCode'].errors
                       }"
                       autocomplete="off"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ng-untouched ng-pristine ng-valid"
@@ -280,6 +280,7 @@
                     Save Search</label
                   >
                 </div>
+
                 <div class="float-right px-4">
                   <button
                     type="button"
@@ -325,7 +326,7 @@
         <table
           class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
         >
-          <div *ngIf="allMeetups == ''">
+          <div *ngIf="allMeetups.length === 0">
             <h3
               style="text-align: center"
               class="items-center text-blueGray-600 text-2xl font-bold"
