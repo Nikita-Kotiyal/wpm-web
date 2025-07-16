@@ -6,5 +6,5 @@
 // }
 export const environment = {
     production: true,
-    apiUrl: ''
+    apiUrl: 'https://api.watchpartymeetup.com/api/'
   };

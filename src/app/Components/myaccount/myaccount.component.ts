@@ -1,19 +1,19 @@
-import { Component } from "@angular/core";
-import { Router } from "@angular/router";
-import { MatDialog } from "@angular/material/dialog";
-import { DialogComponent } from "../dialog/dialog.component";
-import { ConfirmationPopUpComponent } from "../confirmation-pop-up/confirmation-pop-up.component";
-import { ApiServiceService } from "src/app/Services/api-service.service";
-import { EditUserDetailDialogComponent } from "./edit-user-detail-dialog/edit-user-detail-dialog.component";
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
+import { ConfirmationPopUpComponent } from '../confirmation-pop-up/confirmation-pop-up.component';
+import { ApiServiceService } from 'src/app/Services/api-service.service';
+import { EditUserDetailDialogComponent } from './edit-user-detail-dialog/edit-user-detail-dialog.component';
 import {
   SocialAuthService,
   FacebookLoginProvider,
   SocialUser,
-} from "angularx-social-login";
+} from 'angularx-social-login';
 @Component({
-  selector: "app-myaccount",
-  templateUrl: "./myaccount.component.html",
-  styleUrls: ["./myaccount.component.css"],
+  selector: 'app-myaccount',
+  templateUrl: './myaccount.component.html',
+  styleUrls: ['./myaccount.component.css'],
 })
 export class MyaccountComponent {
   showModal = false;
@@ -21,6 +21,9 @@ export class MyaccountComponent {
   userData: any;
   userDetail: any = [];
   serachedData: any = [];
+  savedSearches: any = [];
+  saveSearchChecked: boolean = false;
+  currentUser: any;
   auth: any;
   constructor(
     private socialAuthService: SocialAuthService,
@@ -29,15 +32,30 @@ export class MyaccountComponent {
     public dialog: MatDialog
   ) {}
   ngOnInit() {
-    let user = localStorage.getItem("user") || "{}";
-    this.userData = JSON.parse(user);
-    this.auth = localStorage.getItem("jwt");
-    if (!this.auth) {
-      this.router.navigate(["/login"]);
-    }
-    this.getUserAllMeetup();
-    this.getMeetUpData();
-    this.getSearchAllMeetup();
+   let user = localStorage.getItem("user") || "{}";
+  this.userData = JSON.parse(user);
+  this.auth = localStorage.getItem("jwt");
+  if (!this.auth) {
+    this.router.navigate(["/login"]);
+  }
+
+  this.currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+
+  if (this.userData && this.userData.id) {
+    this.apiService.getUserSavedSearches(this.userData.id).subscribe((res: any) => {
+      // Sort by createdAt in descending order (newest first)
+      this.savedSearches = res.data.sort((a: any, b: any) => {
+        return new Date(b.attributes.createdAt).getTime() - new Date(a.attributes.createdAt).getTime();
+      });
+
+      this.serachedData = this.savedSearches;
+      console.log('✅ Saved searches loaded:', this.savedSearches);
+    });
+  }
+
+  this.getUserAllMeetup();
+  this.getMeetUpData();
+
   }
   getMeetUpData() {
     this.apiService.getAllMeetup(this.auth).subscribe((res: any) => {
@@ -64,25 +82,21 @@ export class MyaccountComponent {
         this.userDetail = res;
       });
   }
-  getSearchAllMeetup() {
+    getSearchAllMeetup() {
+    this.serachedData = [];
+
     this.apiService.getSearchMeetup(this.auth).subscribe((res: any) => {
-      console.log('API getSearchMeetup response:', res); // Debug log
       if (res.data) {
-        res.data.map((ele: any) => {
-          if (ele?.attributes?.users_permissions_user?.data?.attributes) {
-            if (
-              ele?.attributes?.users_permissions_user?.data?.attributes
-                ?.email === this.userData.email
-            ) {
-              this.serachedData = [...this.serachedData, ele];
-            }
-          }
-        });
+        this.serachedData = res.data.filter((ele: any) =>
+          ele?.attributes?.users_permissions_user?.data?.attributes?.email === this.userData.email
+        );
       }
     });
   }
+
+
   createMeetupClick() {
-    this.router.navigateByUrl("createmeetup");
+    this.router.navigateByUrl('createmeetup');
   }
   confirmationDialog(meetup: any, data: any) {
     const dialogRef = this.dialog.open(ConfirmationPopUpComponent, {
@@ -121,14 +135,14 @@ export class MyaccountComponent {
     });
   }
   meetupViewClick(meetup: any) {
-    this.router.navigate(["meetup-view"], {
+    this.router.navigate(['meetup-view'], {
       queryParams: { id: JSON.stringify(meetup.id) },
     });
   }
   onEdit(user: any, text: any) {
     const dialogRef = this.dialog.open(EditUserDetailDialogComponent, {
       data: { user: user, role: text },
-      panelClass: "backdropBackground",
+      panelClass: 'backdropBackground',
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.getUserAllMeetup();
@@ -136,7 +150,7 @@ export class MyaccountComponent {
     });
   }
   getRunSearchMeetup(data: any) {
-    this.router.navigate([""], {
+    this.router.navigate([''], {
       queryParams: { id: JSON.stringify(data.id) },
     });
   }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Form } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,9 +9,10 @@ import { Observable, catchError, map, tap, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiServiceService {
-  // static URL = "http://localhost:1337"
-  static APIURL = 'http://54.186.187.165:1337/api/';
-  // static APIURL = "http://localhost:1337/api/"
+  // static APIURL = "http://localhost:1337"
+  static APIURL = 'https://api.watchpartymeetup.com/api/';
+  // static APIURL = 'http://localhost:1337/api/';
+  // static APIURL = 'http://54.186.187.165:1337/api/';
   private appmod = '';
   constructor(protected http: HttpClient, protected router: Router) {
     this.appmod = 'login';
@@ -473,6 +474,22 @@ export class ApiServiceService {
         catchError(async (error) => error)
       );
   }
+
+    getHomes(session: any) {
+    this.appmod = 'homes';
+    return this.http
+      .get<any>(ApiServiceService.APIURL + this.appmod, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + session,
+        },
+      })
+      .pipe(
+        tap((data) => data),
+        catchError(async (error) => error)
+      );
+  }
+
   contactUs(data: any) {
     this.appmod = 'contact-uses';
     return this.http
@@ -486,4 +503,17 @@ export class ApiServiceService {
         catchError(async (error) => error)
       );
   }
+
+  getUserSavedSearches(userId: number): Observable<any> {
+    this.appmod = `search-meetups?filters[users_permissions_user][id][$eq]=${userId}&populate=*`;
+    return this.http.get(ApiServiceService.APIURL + this.appmod, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+    });
+  }
+
+
+
 }

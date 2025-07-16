@@ -8,6 +8,7 @@ import { ApiServiceService } from 'src/app/Services/api-service.service';
 })
 export class CardsComponent {
   cardsData: any = [];
+
   constructor(
     private apiService: ApiServiceService,
   ) { }
@@ -16,5 +17,7 @@ export class CardsComponent {
     this.apiService.getMeetupCards().subscribe((res: any) => {
       this.cardsData = res.data;
     });
+
+
   }
 }

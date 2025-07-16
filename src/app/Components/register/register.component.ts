@@ -100,4 +100,8 @@ export class RegisterComponent {
   signInWithGoogle() {
     window.location.href = 'http://localhost:1337/api/connect/google';
   }
+
+  signInWithFacebook(): void {
+    window.location.href = 'http://localhost:1337/api/connect/facebook';
+  }
 }
