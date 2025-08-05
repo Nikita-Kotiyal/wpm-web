@@ -69,7 +69,8 @@ export class LandingpageComponent {
   curretUser: any;
   allEvents: any;
   homeData: any = [];
-
+  homeTopData: any = [];
+  homeMidData: any = [];
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -81,6 +82,14 @@ export class LandingpageComponent {
   ) {}
 
   ngOnInit(): void {
+    this.apiService.getTopHomeAd().subscribe((res: any) => {
+      this.homeTopData = res.data;
+    });
+
+     this.apiService.getMidHomeAd().subscribe((res: any) => {
+      this.homeMidData = res.data;
+    });
+
     this.optionName = 'Team';
     this.authkey = localStorage.getItem('jwt');
     let user: any = localStorage.getItem('user');
@@ -98,15 +107,15 @@ export class LandingpageComponent {
       }
     }
 
-   this.apiService.getHomes('').subscribe({
-    next: (response) => {
-      console.log('Home data:', response);
-      this.homeData = response.data;
-    },
-    error: (error) => {
-      console.error('Error:', error);
-    }
-  });
+    this.apiService.getHomes('').subscribe({
+      next: (response) => {
+        console.log('Home data:', response);
+        this.homeData = response.data;
+      },
+      error: (error) => {
+        console.error('Error:', error);
+      },
+    });
 
     this.myImgUrl = '../../../assets/logo-party (1).png';
     this.apiService.getSports().subscribe((res: any) => {
@@ -238,20 +247,20 @@ export class LandingpageComponent {
     this.allMeetups.push(html);
   }
 
- getSearchData(): void {
-  this.searchForm.markAllAsTouched();
-  if (
-    this.searchForm.get('firstDate')?.value == '' &&
-    this.searchForm.get('sport')?.value == '' &&
-    this.searchForm.get('team')?.value == '' &&
-    this.searchForm.get('league')?.value == '' &&
-    this.searchForm.get('zipCode')?.value == '' &&
-    this.searchForm.get('sport')?.value == '' &&
-    this.searchForm.get('dateRange')?.value == ''
-  ) {
-    this.toastr.error('Please! fill atleast one field.');
-    return;
-  }
+  getSearchData(): void {
+    this.searchForm.markAllAsTouched();
+    if (
+      this.searchForm.get('firstDate')?.value == '' &&
+      this.searchForm.get('sport')?.value == '' &&
+      this.searchForm.get('team')?.value == '' &&
+      this.searchForm.get('league')?.value == '' &&
+      this.searchForm.get('zipCode')?.value == '' &&
+      this.searchForm.get('sport')?.value == '' &&
+      this.searchForm.get('dateRange')?.value == ''
+    ) {
+      this.toastr.error('Please! fill atleast one field.');
+      return;
+    }
     let firstDate =
       'filters[createdAt][$gte]=' +
       this.searchForm.get('firstDate')?.value +
@@ -296,44 +305,47 @@ export class LandingpageComponent {
     }
 
     this.apiService
-    .getSearchedMeetup(this.meetupSearchData)
-    .subscribe((res: any) => {
-      const now = new Date().getTime();
+      .getSearchedMeetup(this.meetupSearchData)
+      .subscribe((res: any) => {
+        const now = new Date().getTime();
 
-      const upcomingMeetups = res.data.filter((meetup: any) => {
-        const rawDate = meetup.attributes?.start_time;
-        if (!rawDate) return false;
-        const meetupTime = new Date(rawDate).getTime();
-        return meetupTime >= now;
+        const upcomingMeetups = res.data.filter((meetup: any) => {
+          const rawDate = meetup.attributes?.start_time;
+          if (!rawDate) return false;
+          const meetupTime = new Date(rawDate).getTime();
+          return meetupTime >= now;
+        });
+
+        this.allMeetups = upcomingMeetups;
+        this.data = upcomingMeetups;
+
+        if (
+          this.searchForm.get('saveSearch')?.value === true &&
+          this.authkey &&
+          this.curretUser
+        ) {
+          const searchMeetupData = {
+            league: this.searchForm.get('league')?.value || '',
+            sport: this.searchForm.get('sport')?.value || '',
+            team: this.searchForm.get('team')?.value || '',
+            startTime: this.searchForm.get('firstDate')?.value || null,
+            endTime: this.searchForm.get('dateRange')?.value || null,
+            miles: this.searchForm.get('radio')?.value || '',
+            latitude: localStorage.getItem('latitude'),
+            longitude: localStorage.getItem('longitude'),
+            ip: localStorage.getItem('ip'),
+            users_permissions_user: this.curretUser.id,
+          };
+
+          console.log('Saving search:', searchMeetupData);
+
+          this.apiService
+            .saveSearchedMeetup(searchMeetupData, this.authkey)
+            .subscribe((res: any) => {
+              this.toastr.success('Search saved successfully!');
+            });
+        }
       });
-
-      this.allMeetups = upcomingMeetups;
-      this.data = upcomingMeetups;
-
-
-      if (this.searchForm.get('saveSearch')?.value === true && this.authkey && this.curretUser) {
-        const searchMeetupData = {
-          league: this.searchForm.get('league')?.value || '',
-          sport: this.searchForm.get('sport')?.value || '',
-          team: this.searchForm.get('team')?.value || '',
-          startTime: this.searchForm.get('firstDate')?.value || null,
-          endTime: this.searchForm.get('dateRange')?.value || null,
-          miles: this.searchForm.get('radio')?.value || '',
-          latitude: localStorage.getItem('latitude'),
-          longitude: localStorage.getItem('longitude'),
-          ip: localStorage.getItem('ip'),
-          users_permissions_user: this.curretUser.id,
-        };
-
-        console.log('Saving search:', searchMeetupData);
-
-        this.apiService
-          .saveSearchedMeetup(searchMeetupData, this.authkey)
-          .subscribe((res: any) => {
-            this.toastr.success('Search saved successfully!');
-          });
-      }
-    });
   }
 
   onItemChange(event: any) {
@@ -407,6 +419,7 @@ export class LandingpageComponent {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
   }
+
   onChangeSavedSports(event: any) {
     this.allTeam = null;
     this.AllSports?.filter((sport: any) => {

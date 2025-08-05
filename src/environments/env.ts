@@ -8,10 +8,12 @@
 
 export const environment = {
   production: false,
-  // googleClientId: '85572446997-02uv95lr0ns2ohevqpkpa3in9rvr1sud.apps.googleusercontent.com',
-  // clientSecret:'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',
-  // apiUrl: 'https://watchpartymeetup.com/api/'
-  apiUrl: 'https://api.watchpartymeetup.com/api/'
+  // For local development
+  apiUrl: 'http://localhost:1337/api/',
+  // For production
+  // apiUrl: 'https://api.watchpartymeetup.com/api/',
+
+  stripePublicKey: 'pk_test_51RmHHP2QR1ApwGD9H0yH3uIoY5pFdHaXnCq7UZiPK9Ld9hZ8YB9OGgom1J34vQiYqvOC381KHSjXpmRgSnnMEPTz00TaQEHq90',
 };
 
 // export default ({ }) => ({

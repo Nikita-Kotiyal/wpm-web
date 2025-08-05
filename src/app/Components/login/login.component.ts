@@ -10,13 +10,13 @@ import {
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from 'src/app/Services/api-service.service';
-
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   date = new Date().getFullYear();
   loginForm: FormGroup = new FormGroup({
     email: new FormControl(''),
@@ -77,6 +77,23 @@ export class LoginComponent {
         this.currentUser = res.user;
         localStorage.setItem('jwt', res.jwt);
         localStorage.setItem('user', JSON.stringify(res.user));
+
+        // Check if the user has confirmed their email
+        // if (res.user && res.user.confirmed) {
+        //   // Check if this is a first-time confirmation
+        //   if (res.user.confirmed && !res.user.previouslyLoggedIn) {
+        //     // This appears to be the first login after confirmation
+        //     this.toastr.success('✅ Your email has been confirmed!');
+
+        //     // Force display of verification message
+        //     setTimeout(() => {
+        //       this.toastr.success('✅ Your email has been verified successfully!');
+        //     }, 500);
+        //   } else {
+        //     this.toastr.success('✅ Login successful!');
+        //   }
+        // }
+
         console.log(localStorage.getItem('route'));
 
         if (localStorage.getItem('route')) {
@@ -92,8 +109,7 @@ export class LoginComponent {
   signInWithGoogle() {
     window.location.href = 'http://localhost:1337/api/connect/google'; // ✅ Use your backend URL
   }
- signInWithFacebook(): void {
-  window.location.href = 'http://localhost:1337/api/connect/facebook';
-}
-
+  signInWithFacebook(): void {
+    window.location.href = 'http://localhost:1337/api/connect/facebook';
+  }
 }

@@ -1,7 +1,7 @@
 <app-auth-navbar></app-auth-navbar>
 <main class="profile-page bg-blueGray-200 pt-6">
   <section class="relative py-4 bg-blueGray-200 h-300-px">
-    <div class="px-4 relative flex content-center items-center justify-center">
+    <!-- <div class="px-4 relative flex content-center items-center justify-center">
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0"
       >
@@ -10,27 +10,6 @@
         </h6>
         <div class="flex flex-wrap">
           <div class="flex-auto px-4 lg:px-10 py-10 pt-0 w-full lg:w-4/12">
-            <!-- <p class="px-4">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum. It is a long established fact that a reader will be
-              distracted by the readable content of a page when looking at its
-              layout. The point of using Lorem Ipsum is that it has a
-              more-or-less normal distribution of letters, as opposed to using
-              'Content here, content here', making it look like readable
-              English. Many desktop publishing packages and web page editors now
-              use Lorem Ipsum as their default model text, and a search for
-              'lorem ipsum' will uncover many web sites still in their infancy.
-              Various versions have evolved over the years, sometimes by
-              accident, sometimes on purpose (injected humour and the like).
-            </p> -->
             <div *ngIf="homeData && homeData.length > 0">
               <div *ngFor="let home of homeData">
                 <p>{{ home.attributes?.title }}</p>
@@ -40,6 +19,35 @@
             <div *ngIf="!homeData || homeData.length === 0">
               <p>No home data available</p>
             </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="flex flex-wrap">
+      <div class="flex-auto px-4 lg:px-10 py-10 pt-0 w-full lg:w-8/12">
+        <div *ngIf="homeData && homeData.length > 0">
+          <div *ngFor="let home of homeData">
+            <p>{{ home.attributes?.title }}</p>
+          </div>
+        </div>
+        <div *ngIf="!homeData || homeData.length === 0">
+          <p>No home data available</p>
+        </div>
+      </div>
+
+      <!-- Right Block: Images -->
+      <div class="w-full lg:w-4/12">
+        <div *ngIf="homeTopData && homeTopData.length > 0">
+          <div *ngFor="let home of homeTopData">
+            <img
+              *ngIf="home?.attributes?.image?.data?.[0]?.attributes?.url"
+              [src]="
+                'https://api.watchpartymeetup.com' +
+                home.attributes.image.data[0].attributes.url
+              "
+              alt="Card Image"
+              class="w-full max-w-[450px] h-auto object-cover"
+            />
           </div>
         </div>
       </div>
@@ -71,7 +79,7 @@
                     autocomplete="off"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
-                    <option value="" selected disabled>Select A Sports</option>
+                    <option value="" selected disabled>Select a Sport</option>
                     <option
                       *ngFor="let s of AllSports"
                       [value]="s.attributes.name"
@@ -130,7 +138,7 @@
                     autocomplete="off"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
-                    <option value="" selected disabled>Select A League</option>
+                    <option value="" selected disabled>Select a League</option>
                     <option
                       *ngFor="let a of allLeague"
                       [value]="a.attributes.name"
@@ -188,7 +196,7 @@
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
                     <option value="" selected disabled>
-                      Select A {{ optionName }}
+                      Select a {{ optionName }}
                     </option>
                     <option
                       *ngFor="let t of allTeam"
@@ -351,6 +359,24 @@
       </div>
     </div>
   </section>
+  <section class="relative py-8 bg-blueGray-200 px-0">
+    <div class="w-full  px-4">
+      <div *ngIf="homeMidData && homeMidData.length > 0">
+        <div *ngFor="let homeMid of homeMidData">
+          <img
+            *ngIf="homeMid?.attributes?.image?.data?.[0]?.attributes?.url"
+            [src]="
+              'https://api.watchpartymeetup.com' +
+              homeMid.attributes.image.data[0].attributes.url
+            "
+            alt="Watch Party Ad"
+            class="w-full h-[220px] object-cover rounded-md shadow-md"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="relative py-8 bg-blueGray-200 h-300-px px-4">
     <div
       class="relative px-4 flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg"

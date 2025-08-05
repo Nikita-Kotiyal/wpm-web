@@ -12,6 +12,9 @@ import { ResetPasswordComponent } from './Components/reset-password/reset-passwo
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { DataDeletionComponent } from './data-deletion/data-deletion.component';
 import { OAuthCallbackComponent } from './Components/o-auth-callback/o-auth-callback.component';
+import { SponsorComponent } from './Components/sponsor/sponsor.component';
+import { PaymentSuccessComponent } from './Components/payment-success/payment-success.component';
+import { EmailConfirmedComponent } from './email-confirmed/email-confirmed.component';
 
 const routes: Routes = [
   { path: '', component: LandingpageComponent },
@@ -25,10 +28,16 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'data-deletion', component: DataDeletionComponent },
+  { path: 'sponsor', component: SponsorComponent },
+  { path: 'payment-success', component: PaymentSuccessComponent }, // Show payment success page
+  { path: 'cancel', component: SponsorComponent }, // Redirect back to sponsor page if canceled
+    { path: 'email-confirmed', component: EmailConfirmedComponent },
   {
     path: 'auth/:provider/callback',
     component: OAuthCallbackComponent, // ✅ Already set up
   },
+
+
 ];
 
 @NgModule({

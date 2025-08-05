@@ -44,6 +44,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { LocationsComponent } from './Components/locations/locations.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { DataDeletionComponent } from './data-deletion/data-deletion.component';
+import { SponsorComponent } from './Components/sponsor/sponsor.component';
+import { PaymentSuccessComponent } from './Components/payment-success/payment-success.component';
+import { EmailConfirmedComponent } from './email-confirmed/email-confirmed.component';
+
 
 @NgModule({
   declarations: [
@@ -69,6 +73,10 @@ import { DataDeletionComponent } from './data-deletion/data-deletion.component';
     LocationsComponent,
     PrivacyPolicyComponent,
     DataDeletionComponent,
+    SponsorComponent,
+    PaymentSuccessComponent,
+    EmailConfirmedComponent,
+    
   ],
   imports: [
     BrowserModule,

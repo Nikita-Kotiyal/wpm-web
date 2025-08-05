@@ -5,6 +5,14 @@ import { Router } from '@angular/router';
 import { Observable, catchError, map, tap, throwError } from 'rxjs';
 // import { Observable } from 'rxjs';
 
+export interface SponsorPayload {
+  fullName: string;
+  Email: string;
+  Amount: number;
+  Note?: string;
+  transactionId: string;
+  paymentStatus: string;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -475,7 +483,7 @@ export class ApiServiceService {
       );
   }
 
-    getHomes(session: any) {
+  getHomes(session: any) {
     this.appmod = 'homes';
     return this.http
       .get<any>(ApiServiceService.APIURL + this.appmod, {
@@ -491,6 +499,7 @@ export class ApiServiceService {
   }
 
   contactUs(data: any) {
+     alert('Inside contactUs');
     this.appmod = 'contact-uses';
     return this.http
       .post<any>(
@@ -514,6 +523,142 @@ export class ApiServiceService {
     });
   }
 
+  getAllProducts(): Observable<any> {
+    this.appmod = 'stripe/products';
+    return this.http.get<any>(ApiServiceService.APIURL + this.appmod).pipe(
+      catchError((error) => {
+        console.error('Error fetching products:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 
+  getProductById(productId: string): Observable<any> {
+    // Try the direct products endpoint first
+    this.appmod = `products/${productId}`;
+    return this.http.get<any>(ApiServiceService.APIURL + this.appmod).pipe(
+      catchError((error) => {
+        console.log('Trying fallback endpoint for product');
+        // If that fails, try the stripe/products endpoint
+        this.appmod = `stripe/products/${productId}`;
+        return this.http.get<any>(ApiServiceService.APIURL + this.appmod);
+      }),
+      catchError((error) => {
+        console.error('Error fetching product from both endpoints:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 
+  getStripeProduct(stripeProductId: string): Observable<any> {
+    this.appmod = `stripe/products/${stripeProductId}`;
+    return this.http.get<any>(ApiServiceService.APIURL + this.appmod).pipe(
+      catchError((error) => {
+        console.error('Error fetching Stripe product:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  createPaymentIntent(paymentData: any): Observable<any> {
+    this.appmod = 'payments/create-intent';
+    return this.http
+      .post<any>(ApiServiceService.APIURL + this.appmod, paymentData, {
+        headers: {
+          'Content-Type': 'application/json',
+          // No authorization header - public access
+        },
+      })
+      .pipe(
+        map((response) => {
+          console.log('Payment intent response:', response);
+          return response;
+        }),
+        catchError((error) => {
+          console.error('Payment intent error:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  submitSponsor(payload: SponsorPayload): Observable<any> {
+    this.appmod = 'sponsors';
+
+    return this.http
+      .post(
+        ApiServiceService.APIURL + this.appmod,
+        { data: payload },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            // No authorization header - public access
+          },
+        }
+      )
+      .pipe(
+        tap((data) => data),
+        catchError((error) => {
+          console.error('Error submitting sponsor:', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  updateSponsor(payload: {
+    id: string;
+    transactionId: string;
+    paymentStatus: string;
+  }): Observable<any> {
+    this.appmod = `sponsors/${payload.id}`;
+
+    return this.http
+      .put(
+        ApiServiceService.APIURL + this.appmod,
+        {
+          data: {
+            transactionId: payload.transactionId,
+            paymentStatus: payload.paymentStatus,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            // No authorization header - public access
+          },
+        }
+      )
+      .pipe(
+        tap((data) => data),
+        catchError((error) => {
+          console.error('Error updating sponsor:', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  getTopHomeAd() {
+    this.appmod = 'home-tops';
+    return this.http.get<any>(
+      ApiServiceService.APIURL + this.appmod + '?populate=*',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ',
+        },
+      }
+    );
+  }
+
+   getMidHomeAd() {
+    this.appmod = 'home-mids';
+    return this.http.get<any>(
+      ApiServiceService.APIURL + this.appmod + '?populate=*',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ',
+        },
+      }
+    );
+  }
 }
